@@ -3,8 +3,10 @@ package com.example.customalertdialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -32,13 +34,22 @@ public class MainActivity extends AppCompatActivity {
         );
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setAdapter(adapter);
-        Button suggestion1 = mView.findViewById(R.id.suggestion1);
-        suggestion1.setOnClickListener(v -> {
-            textView.setText(suggestion1.getText());
-        });
+        setSuggestionButtons(mView, textView);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
+        textView.setFocusableInTouchMode(true);
+        textView.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
 
+    private void setSuggestionButtons(View mView, AutoCompleteTextView textView) {
+        for(int an_id : new int[]{R.id.suggestion1, R.id.suggestion2, R.id.suggestion3}){
+            Button suggestion = mView.findViewById(an_id);
+            suggestion.setOnClickListener(v -> {
+                textView.setText(suggestion.getText());
+            });
+        }
     }
 }
