@@ -20,4 +20,29 @@ public class SuggestionHandlerTest {
         assertTrue(Arrays.asList(dummyOwners).contains(suggestions[1]));
         assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
     }
+
+    @Test
+    public void suggestionsWithOnePreviousSelection() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("previous owner marked");
+        String[] suggestions = handler.getSuggestions();
+        assertEquals(3, suggestions.length);
+        assertThat(suggestions).doesNotHaveDuplicates();
+        assertEquals("previous owner marked", suggestions[0]);
+        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[1]));
+        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
+    }
+
+    @Test
+    public void suggestionsWithTwoPreviousSelections() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("oneOwner");
+        handler.setSuggestion("twoOwners");
+        String[] suggestions = handler.getSuggestions();
+        assertEquals(3, suggestions.length);
+        assertThat(suggestions).doesNotHaveDuplicates();
+        assertEquals("twoOwners", suggestions[0]);
+        assertTrue(Arrays.asList("oneOwner").contains(suggestions[1]));
+        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
+    }
 }

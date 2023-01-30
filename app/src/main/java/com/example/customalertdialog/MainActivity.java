@@ -69,8 +69,4 @@ public class MainActivity extends AppCompatActivity {
             suggestion.setOnClickListener(v -> textView.setText(suggestion.getText()));
         }
     }
-
-    private void setActionButtons(View mView, AutoCompleteTextView textView) {
-
-    }
 }
