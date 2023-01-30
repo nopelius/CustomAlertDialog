@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 this, android.R.layout.simple_dropdown_item_1line, OWNERS
         );
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
+        textView.setThreshold(1);
         textView.setAdapter(adapter);
         String[] suggestions = suggHandler.getSuggestions();
         setSuggestionButtons(mView, textView, suggestions);
@@ -46,6 +47,18 @@ public class MainActivity extends AppCompatActivity {
         textView.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+        Button markButton = mView.findViewById(R.id.markButton);
+        markButton.setOnClickListener(v-> {
+            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+            dialog.cancel();
+        });
+
+        Button cancelButton = mView.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(v-> {
+            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+            dialog.cancel();
+        });
     }
 
     private void setSuggestionButtons(View mView, AutoCompleteTextView textView, String[] suggestions) {
@@ -55,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
             suggestion.setText(suggestions[i]);
             suggestion.setOnClickListener(v -> textView.setText(suggestion.getText()));
         }
+    }
+
+    private void setActionButtons(View mView, AutoCompleteTextView textView) {
+
     }
 }
