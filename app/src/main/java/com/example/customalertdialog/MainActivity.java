@@ -13,6 +13,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    SuggestionHandler suggHandler;
+
     private static final String[] OWNERS = new String[] {
       "Simo Siivola", "Pasi Poromies", "Lassi Lapinmies", "Laila Lakkasuo", "Repa Revontuli",
       "Timo Tunturi", "Sakke Suoperä", "Heikki Heinähattu", "Kullervo Kullanhuuhtoja"
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button openDialogButton = findViewById(R.id.mark);
         openDialogButton.setOnClickListener(v -> showDialog());
+        suggHandler = new SuggestionHandler(OWNERS);
     }
 
     protected void showDialog() {
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         );
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setAdapter(adapter);
-        setSuggestionButtons(mView, textView);
+        String[] suggestions = suggHandler.getSuggestions();
+        setSuggestionButtons(mView, textView, suggestions);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
@@ -44,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    private void setSuggestionButtons(View mView, AutoCompleteTextView textView) {
-        for(int an_id : new int[]{R.id.suggestion1, R.id.suggestion2, R.id.suggestion3}){
-            Button suggestion = mView.findViewById(an_id);
-            suggestion.setOnClickListener(v -> {
-                textView.setText(suggestion.getText());
-            });
+    private void setSuggestionButtons(View mView, AutoCompleteTextView textView, String[] suggestions) {
+        int[] buttonIds = new int[]{R.id.suggestion1, R.id.suggestion2, R.id.suggestion3};
+        for(int i=0; i<3; i++) {
+            Button suggestion = mView.findViewById(buttonIds[i]);
+            suggestion.setText(suggestions[i]);
+            suggestion.setOnClickListener(v -> textView.setText(suggestion.getText()));
         }
     }
 }

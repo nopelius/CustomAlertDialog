@@ -27,28 +27,30 @@
         android:layout_below="@id/autoCompleteTextView"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="3">
 
         <Button
             android:id="@+id/suggestion1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stuff"
-            android:textSize="11sp" />
-
+            android:textSize="11sp"
+            android:layout_weight="1" />
         <Button
             android:id="@+id/suggestion2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other"
-            android:textSize="11sp" />
-
+            android:textSize="11sp"
+            android:layout_weight="1" />
         <Button
             android:id="@+id/suggestion3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Third"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
