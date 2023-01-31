@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class SuggestionHandlerTest {
@@ -56,6 +57,33 @@ public class SuggestionHandlerTest {
         );
     }
 
+    @Test
+    public void suggestionsWithOwnersThatCanBeFound() {
+        SuggestionHandler handler = new SuggestionHandler(
+                new String[] {"a", "b", "c"}
+        );
+        handler.setSuggestion("a");
+        String[] suggestions = handler.getSuggestions();
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"a", "", ""}, dummyOwners
+        );
+    }
+
+    @Test
+    public void suggestionsWithOwnerThatCanBeFound() {
+        SuggestionHandler handler = new SuggestionHandler(
+                new String[] {"a", "b", "c"}
+        );
+        handler.setSuggestion("b");
+        handler.setSuggestion("a");
+        String[] suggestions = handler.getSuggestions();
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"a", "b", "c"}, dummyOwners
+        );
+    }
+
     private void theThreeSuggestionsContainsNoDuplicates(String suggestions[]) {
         assertEquals(3, suggestions.length);
         assertThat(suggestions).doesNotHaveDuplicates();
@@ -63,7 +91,7 @@ public class SuggestionHandlerTest {
 
     private void suggestionsAreCorrect(String[] whatIs, String[] oughToBe, String[] owners) {
         for(int i=0; i<3; i++) {
-            if(oughToBe[i] == ""){
+            if(Objects.equals(oughToBe[i], "")){
                 assertTrue(Arrays.asList(owners).contains(whatIs[i]));
             } else {
                 assertEquals(whatIs[i], oughToBe[i]);

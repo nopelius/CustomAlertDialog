@@ -22,14 +22,24 @@ public class SuggestionHandler {
     public String[] getSuggestions() {
         String[] suggestions = new String[]{"", "", ""};
         Collections.shuffle(Arrays.asList(owners));
+        int offset = 0;
         for (int i=0; i<3; i++) {
             if(Objects.equals(previousSelections[i], "")){
-                suggestions[i] = owners[i];
+                offset = selectOffset(offset, suggestions, owners);
+                suggestions[i] = owners[offset];
             } else {
                 suggestions[i] = previousSelections[i];
             }
         }
         return suggestions;
+    }
+
+    private int selectOffset(int i, String[] suggestions, String[] owners) {
+        if(Arrays.asList(suggestions).contains(owners[i])){
+            return selectOffset(i+1, suggestions, owners);
+        } else {
+            return i;
+        }
     }
 
 }
