@@ -14,11 +14,10 @@ public class SuggestionHandlerTest {
     public void suggestionsWithoutPreviousSelections() {
         SuggestionHandler handler = new SuggestionHandler(dummyOwners);
         String[] suggestions = handler.getSuggestions();
-        assertEquals(3, suggestions.length);
-        assertThat(suggestions).doesNotHaveDuplicates();
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[0]));
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[1]));
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"", "", ""}, dummyOwners
+        );
     }
 
     @Test
@@ -26,11 +25,10 @@ public class SuggestionHandlerTest {
         SuggestionHandler handler = new SuggestionHandler(dummyOwners);
         handler.setSuggestion("previous owner marked");
         String[] suggestions = handler.getSuggestions();
-        assertEquals(3, suggestions.length);
-        assertThat(suggestions).doesNotHaveDuplicates();
-        assertEquals("previous owner marked", suggestions[0]);
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[1]));
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"previous owner marked", "", ""}, dummyOwners
+        );
     }
 
     @Test
@@ -39,10 +37,37 @@ public class SuggestionHandlerTest {
         handler.setSuggestion("oneOwner");
         handler.setSuggestion("twoOwners");
         String[] suggestions = handler.getSuggestions();
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"twoOwners", "oneOwner", ""}, dummyOwners
+        );
+    }
+
+    @Test
+    public void suggestionsWithThreePreviousSelections() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("oneOwner");
+        handler.setSuggestion("twoOwners");
+        handler.setSuggestion("threeOwners");
+        String[] suggestions = handler.getSuggestions();
+        theThreeSuggestionsContainsNoDuplicates(suggestions);
+        suggestionsAreCorrect(
+                suggestions, new String[] {"threeOwners", "twoOwners", "oneOwner"}, dummyOwners
+        );
+    }
+
+    private void theThreeSuggestionsContainsNoDuplicates(String suggestions[]) {
         assertEquals(3, suggestions.length);
         assertThat(suggestions).doesNotHaveDuplicates();
-        assertEquals("twoOwners", suggestions[0]);
-        assertTrue(Arrays.asList("oneOwner").contains(suggestions[1]));
-        assertTrue(Arrays.asList(dummyOwners).contains(suggestions[2]));
+    }
+
+    private void suggestionsAreCorrect(String[] whatIs, String[] oughToBe, String[] owners) {
+        for(int i=0; i<3; i++) {
+            if(oughToBe[i] == ""){
+                assertTrue(Arrays.asList(owners).contains(whatIs[i]));
+            } else {
+                assertEquals(whatIs[i], oughToBe[i]);
+            }
+        }
     }
 }

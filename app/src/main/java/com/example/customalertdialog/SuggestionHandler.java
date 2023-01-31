@@ -14,6 +14,7 @@ public class SuggestionHandler {
     }
 
     public void setSuggestion(String suggestion) {
+        this.previousSelections[2] = this.previousSelections[1];
         this.previousSelections[1] = this.previousSelections[0];
         this.previousSelections[0] = suggestion;
     }
