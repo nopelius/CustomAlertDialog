@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         textView.setFocusableInTouchMode(true);
         textView.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button markButton = mView.findViewById(R.id.markButton);
         markButton.setOnClickListener(v-> {
+            suggHandler.setSuggestion(textView.getText().toString());
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
             dialog.cancel();
         });
