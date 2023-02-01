@@ -9,7 +9,7 @@ import java.util.Objects;
 
 
 public class SuggestionHandlerTest {
-    final String[] dummyOwners = new String[] {"a", "b", "c", "d", "e", "f", "g"};
+    final String[] dummyOwners = new String[] {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
     final String[] shortDummyOwners = new String[] {"a", "b", "c"};
 
     @Test
@@ -71,6 +71,35 @@ public class SuggestionHandlerTest {
         handler.setSuggestion("a");
         handler.setSuggestion("a");
         suggestionsCheck(handler, new String[] {"a", "", ""}, shortDummyOwners);
+    }
+
+    @Test
+    public void suggestionsWithLaterRecurringOwner() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("a");
+        handler.setSuggestion("b");
+        handler.setSuggestion("a");
+        suggestionsCheck(handler, new String[] {"a", "b", ""}, dummyOwners);
+    }
+
+    @Test
+    public void suggestionsWithMuchLaterRecurringOwner() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("a");
+        handler.setSuggestion("b");
+        handler.setSuggestion("c");
+        handler.setSuggestion("a");
+        suggestionsCheck(handler, new String[] {"a", "c", "b"}, dummyOwners);
+    }
+
+    @Test
+    public void suggestionsWithAtTheMiddleRecurringOwner() {
+        SuggestionHandler handler = new SuggestionHandler(dummyOwners);
+        handler.setSuggestion("a");
+        handler.setSuggestion("b");
+        handler.setSuggestion("c");
+        handler.setSuggestion("b");
+        suggestionsCheck(handler, new String[] {"b", "c", "a"}, dummyOwners);
     }
 
     private void suggestionsCheck(SuggestionHandler handler, String[] oughtToBe, String[] owners) {

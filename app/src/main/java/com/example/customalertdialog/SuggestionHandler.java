@@ -1,5 +1,7 @@
 package com.example.customalertdialog;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -15,11 +17,18 @@ public class SuggestionHandler {
 
     public void setSuggestion(String suggestion) {
         if(Arrays.asList(previousSelections).contains(suggestion)) {
-            this.previousSelections[0] = suggestion;
+            int removalIndex = ArrayUtils.indexOf(previousSelections, suggestion);
+            moveTheLine(removalIndex);
         } else {
-            this.previousSelections[2] = this.previousSelections[1];
-            this.previousSelections[1] = this.previousSelections[0];
-            this.previousSelections[0] = suggestion;
+            moveTheLine(2);
+        }
+        this.previousSelections[0] = suggestion;
+    }
+
+    private void moveTheLine(int removalIndex) {
+        this.previousSelections[removalIndex] = "";
+        for(int i=removalIndex-1; i>-1; i--){
+            this.previousSelections[i+1] = this.previousSelections[i];
         }
     }
 
