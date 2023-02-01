@@ -68,7 +68,13 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<3; i++) {
             Button suggestion = mView.findViewById(buttonIds[i]);
             suggestion.setText(suggestions[i]);
-            suggestion.setOnClickListener(v -> textView.setText(suggestion.getText()));
+            suggestion.setOnClickListener(v -> {
+                textView.setFocusable(false);
+                textView.setFocusableInTouchMode(false);
+                textView.setText(suggestion.getText());
+                textView.setFocusable(true);
+                textView.setFocusableInTouchMode(true);
+            });
         }
     }
 }

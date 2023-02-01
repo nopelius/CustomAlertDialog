@@ -35,14 +35,14 @@
             android:id="@+id/suggestion1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stuff"
+            android:text="First"
             android:textSize="11sp"
             android:layout_weight="1" />
         <Button
             android:id="@+id/suggestion2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"
+            android:text="Second"
             android:textSize="11sp"
             android:layout_weight="1" />
         <Button
