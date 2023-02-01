@@ -10,14 +10,13 @@ import java.util.Objects;
 
 public class SuggestionHandlerTest {
     final String[] dummyOwners = new String[] {"a", "b", "c", "d", "e", "f", "g"};
+    final String[] shortDummyOwners = new String[] {"a", "b", "c"};
 
     @Test
     public void suggestionsWithoutPreviousSelections() {
         SuggestionHandler handler = new SuggestionHandler(dummyOwners);
-        String[] suggestions = handler.getSuggestions();
-        theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"", "", ""}, dummyOwners
+        suggestionsCheck(
+                handler, new String[] {"", "", ""}, dummyOwners
         );
     }
 
@@ -25,10 +24,8 @@ public class SuggestionHandlerTest {
     public void suggestionsWithOnePreviousSelection() {
         SuggestionHandler handler = new SuggestionHandler(dummyOwners);
         handler.setSuggestion("previous owner marked");
-        String[] suggestions = handler.getSuggestions();
-        theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"previous owner marked", "", ""}, dummyOwners
+        suggestionsCheck(
+                handler, new String[] {"previous owner marked", "", ""}, dummyOwners
         );
     }
 
@@ -37,10 +34,8 @@ public class SuggestionHandlerTest {
         SuggestionHandler handler = new SuggestionHandler(dummyOwners);
         handler.setSuggestion("oneOwner");
         handler.setSuggestion("twoOwners");
-        String[] suggestions = handler.getSuggestions();
-        theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"twoOwners", "oneOwner", ""}, dummyOwners
+        suggestionsCheck(
+                handler, new String[] {"twoOwners", "oneOwner", ""}, dummyOwners
         );
     }
 
@@ -50,38 +45,38 @@ public class SuggestionHandlerTest {
         handler.setSuggestion("oneOwner");
         handler.setSuggestion("twoOwners");
         handler.setSuggestion("threeOwners");
-        String[] suggestions = handler.getSuggestions();
-        theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"threeOwners", "twoOwners", "oneOwner"}, dummyOwners
+        suggestionsCheck(
+                handler, new String[] {"threeOwners", "twoOwners", "oneOwner"}, dummyOwners
         );
     }
 
     @Test
     public void suggestionsWithOwnersThatCanBeFound() {
-        SuggestionHandler handler = new SuggestionHandler(
-                new String[] {"a", "b", "c"}
-        );
+        SuggestionHandler handler = new SuggestionHandler(shortDummyOwners);
         handler.setSuggestion("a");
-        String[] suggestions = handler.getSuggestions();
-        theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"a", "", ""}, dummyOwners
-        );
+        suggestionsCheck(handler, new String[] {"a", "", ""}, shortDummyOwners);
     }
 
     @Test
     public void suggestionsWithOwnerThatCanBeFound() {
-        SuggestionHandler handler = new SuggestionHandler(
-                new String[] {"a", "b", "c"}
-        );
+        SuggestionHandler handler = new SuggestionHandler(shortDummyOwners);
         handler.setSuggestion("b");
         handler.setSuggestion("a");
+        suggestionsCheck(handler, new String[] {"a", "b", "c"}, shortDummyOwners);
+    }
+
+    @Test
+    public void suggestionsWithRecurringOwner() {
+        SuggestionHandler handler = new SuggestionHandler(shortDummyOwners);
+        handler.setSuggestion("a");
+        handler.setSuggestion("a");
+        suggestionsCheck(handler, new String[] {"a", "", ""}, shortDummyOwners);
+    }
+
+    private void suggestionsCheck(SuggestionHandler handler, String[] oughtToBe, String[] owners) {
         String[] suggestions = handler.getSuggestions();
         theThreeSuggestionsContainsNoDuplicates(suggestions);
-        suggestionsAreCorrect(
-                suggestions, new String[] {"a", "b", "c"}, dummyOwners
-        );
+        suggestionsAreCorrect(suggestions, oughtToBe, owners);
     }
 
     private void theThreeSuggestionsContainsNoDuplicates(String suggestions[]) {

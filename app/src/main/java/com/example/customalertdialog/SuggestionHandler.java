@@ -14,9 +14,13 @@ public class SuggestionHandler {
     }
 
     public void setSuggestion(String suggestion) {
-        this.previousSelections[2] = this.previousSelections[1];
-        this.previousSelections[1] = this.previousSelections[0];
-        this.previousSelections[0] = suggestion;
+        if(Arrays.asList(previousSelections).contains(suggestion)) {
+            this.previousSelections[0] = suggestion;
+        } else {
+            this.previousSelections[2] = this.previousSelections[1];
+            this.previousSelections[1] = this.previousSelections[0];
+            this.previousSelections[0] = suggestion;
+        }
     }
 
     public String[] getSuggestions() {
