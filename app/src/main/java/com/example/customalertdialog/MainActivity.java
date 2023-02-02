@@ -13,7 +13,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    SuggestionHandler suggHandler;
+    SuggestionHandler suggestionHandler;
 
     private static final String[] OWNERS = new String[] {
       "Simo Siivola", "Pasi Poromies", "Lassi Lapinmies", "Laila Lakkasuo", "Repa Revontuli",
@@ -26,24 +26,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button openDialogButton = findViewById(R.id.mark);
         openDialogButton.setOnClickListener(v -> showDialog());
-        suggHandler = new SuggestionHandler(OWNERS);
+        suggestionHandler = new SuggestionHandler(OWNERS);
     }
 
     protected void showDialog() {
-        MarkDeerDialog markDeerDialog = new MarkDeerDialog(OWNERS);
         View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-        final AlertDialog dialog = markDeerDialog.createDialog(mView, MainActivity.this);
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(false);
-        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
-        textView.setFocusableInTouchMode(true);
-        textView.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        MarkDeerDialog markDeerDialog = new MarkDeerDialog(mView, imm);
+        final AlertDialog dialog = markDeerDialog.createDialog( MainActivity.this, suggestionHandler);
+        markDeerDialog.openDialog(dialog);
+        createActionButtonsForMarkDeerDialog(mView, dialog, imm);
+    }
+
+    private void createActionButtonsForMarkDeerDialog(View mView, AlertDialog dialog, InputMethodManager imm) {
+        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
 
         Button markButton = mView.findViewById(R.id.markButton);
         markButton.setOnClickListener(v-> {
-            suggHandler.setSuggestion(textView.getText().toString());
+            suggestionHandler.setSuggestion(textView.getText().toString());
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
             dialog.cancel();
         });

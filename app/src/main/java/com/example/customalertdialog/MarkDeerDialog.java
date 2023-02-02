@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -13,18 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MarkDeerDialog extends AppCompatActivity {
 
-    private final String[] owners;
-    SuggestionHandler suggestionHandler;
+    View mView;
+    InputMethodManager imm;
 
-    public MarkDeerDialog(String[] owners) {
-        this.owners = owners;
-        this.suggestionHandler = new SuggestionHandler(owners);
+    public MarkDeerDialog(View mView, InputMethodManager imm) {
+        this.mView = mView;
+        this.imm = imm;
     }
 
-    public AlertDialog createDialog(View mView, Context context) {
+    public AlertDialog createDialog(Context context, SuggestionHandler suggestionsHandler) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                context, android.R.layout.simple_dropdown_item_1line, this.owners
+                context, android.R.layout.simple_dropdown_item_1line, suggestionsHandler.owners
         );
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setThreshold(1);
@@ -44,11 +45,20 @@ public class MarkDeerDialog extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
-        String[] suggestions = suggestionHandler.getSuggestions();
+        String[] suggestions = suggestionsHandler.getSuggestions();
         setSuggestionButtons(mView, textView, suggestions);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         return dialog;
+    }
+
+    public void openDialog(AlertDialog dialog) {
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
+        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
+        textView.setFocusableInTouchMode(true);
+        textView.requestFocus();
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     private void setSuggestionButtons(View mView, AutoCompleteTextView textView, String[] suggestions) {
