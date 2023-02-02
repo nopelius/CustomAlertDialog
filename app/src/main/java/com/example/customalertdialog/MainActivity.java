@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
             dialog.cancel();
         });
+        markButton.setEnabled(false);
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v-> {
