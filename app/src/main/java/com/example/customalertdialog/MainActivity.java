@@ -30,20 +30,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void showDialog() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        MarkDeerDialog markDeerDialog = new MarkDeerDialog(OWNERS);
         View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line, OWNERS
-        );
-        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
-        textView.setThreshold(1);
-        textView.setAdapter(adapter);
-        String[] suggestions = suggHandler.getSuggestions();
-        setSuggestionButtons(mView, textView, suggestions);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
+        final AlertDialog dialog = markDeerDialog.createDialog(mView, MainActivity.this);
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
+        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setFocusableInTouchMode(true);
         textView.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -61,20 +53,5 @@ public class MainActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
             dialog.cancel();
         });
-    }
-
-    private void setSuggestionButtons(View mView, AutoCompleteTextView textView, String[] suggestions) {
-        int[] buttonIds = new int[]{R.id.suggestion1, R.id.suggestion2, R.id.suggestion3};
-        for(int i=0; i<3; i++) {
-            Button suggestion = mView.findViewById(buttonIds[i]);
-            suggestion.setText(suggestions[i]);
-            suggestion.setOnClickListener(v -> {
-                textView.setFocusable(false);
-                textView.setFocusableInTouchMode(false);
-                textView.setText(suggestion.getText());
-                textView.setFocusable(true);
-                textView.setFocusableInTouchMode(true);
-            });
-        }
     }
 }
