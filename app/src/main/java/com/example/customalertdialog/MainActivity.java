@@ -27,17 +27,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button openDialogButton = findViewById(R.id.mark);
-        openDialogButton.setOnClickListener(v -> showDialog());
+        openDialogButton.setOnClickListener(v -> showMarkDialog());
+        Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
+        openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog());
+
         suggestionHandler = new SuggestionHandler(OWNERS);
     }
 
-    protected void showDialog() {
-        View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+    protected void showMarkDialog() {
+        View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm);
         final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
         markDialogCreator.openDialog(dialog);
         createActionButtonsForMarkDeerDialog(mView, dialog, imm);
+    }
+
+    protected void showMarkOrRemoveDialog() {
+        View mView = getLayoutInflater().inflate(R.layout.remark_or_remove_dialog, null);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        Button cancelButton = mView.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(v -> {
+            dialog.cancel();
+        });
     }
 
     private void createActionButtonsForMarkDeerDialog(View mView, AlertDialog dialog, InputMethodManager imm) {
