@@ -9,7 +9,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
         android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="7dp"
         android:text="Merkkaa omistaja vasalle:"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -77,4 +81,18 @@
             android:layout_weight="1"/>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="360dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="30dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/korvamerkki" />
 </RelativeLayout>

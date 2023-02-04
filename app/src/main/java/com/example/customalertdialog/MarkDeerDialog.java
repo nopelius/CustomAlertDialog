@@ -9,17 +9,24 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class MarkDeerDialog extends AppCompatActivity {
 
     View mView;
     InputMethodManager imm;
+    boolean ownerSelected;
 
     public MarkDeerDialog(View mView, InputMethodManager imm) {
         this.mView = mView;
         this.imm = imm;
+        this.ownerSelected = false;
     }
 
     public AlertDialog createDialog(Context context, SuggestionHandler suggestionsHandler) {
@@ -39,6 +46,7 @@ public class MarkDeerDialog extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 Button markButton = mView.findViewById(R.id.markButton);
                 markButton.setEnabled(charSequence.length() > 2);
+                setEarMarkImage(charSequence.toString());
             }
 
             @Override
@@ -74,5 +82,30 @@ public class MarkDeerDialog extends AppCompatActivity {
                 textView.setFocusableInTouchMode(true);
             });
         }
+    }
+
+    private void setEarMarkImage(String owner) {
+        ImageView image = mView.findViewById(R.id.imageView);
+        if(owner.equals("Simo Siivola")) {
+            image.setImageResource(R.drawable.simon_merkki);
+            ownerSelected = true;
+        } else if (owner.equals("Kullervo Kullanhuuhtoja")) {
+            image.setImageResource(R.drawable.kullervonmerkki);
+            ownerSelected = true;
+        } else {
+            if(ownerSelected) {
+                setRandomPlaceholderImage(image);
+            }
+            ownerSelected = false;
+        }
+    }
+
+    private void setRandomPlaceholderImage(ImageView image) {
+        List<Integer> givenList = Arrays.asList(
+                R.drawable.poro, R.drawable.korvamerkki
+        );
+        Random rand = new Random();
+        int randomElement = givenList.get(rand.nextInt(givenList.size()));
+        image.setImageResource(randomElement);
     }
 }
