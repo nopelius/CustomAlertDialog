@@ -1,6 +1,6 @@
-package com.example.customalertdialog;
+package com.example.customalertdialog.dialogs;
 
-import android.widget.ImageView;
+import com.example.customalertdialog.R;
 
 import java.util.Arrays;
 import java.util.HashMap;

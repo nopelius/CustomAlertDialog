@@ -1,4 +1,4 @@
-package com.example.customalertdialog;
+package com.example.customalertdialog.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,18 +13,16 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import com.example.customalertdialog.R;
 
-public class MarkDeerDialog extends AppCompatActivity {
+public class MarkDialogCreator extends AppCompatActivity {
 
     View mView;
     InputMethodManager imm;
     boolean ownerSelected;
     EarMarkImageSelector earMarkImageSelector;
 
-    public MarkDeerDialog(View mView, InputMethodManager imm) {
+    public MarkDialogCreator(View mView, InputMethodManager imm) {
         this.mView = mView;
         this.imm = imm;
         this.ownerSelected = false;

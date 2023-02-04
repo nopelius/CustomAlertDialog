@@ -1,4 +1,4 @@
-package com.example.customalertdialog;
+package com.example.customalertdialog.dialogs;
 
 import org.apache.commons.lang3.ArrayUtils;
 

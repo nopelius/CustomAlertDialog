@@ -4,6 +4,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
 
+import com.example.customalertdialog.dialogs.SuggestionHandler;
+
 import java.util.Arrays;
 import java.util.Objects;
 

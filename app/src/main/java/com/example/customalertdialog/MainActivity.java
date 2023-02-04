@@ -7,9 +7,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
+import com.example.customalertdialog.dialogs.MarkDialogCreator;
+import com.example.customalertdialog.dialogs.SuggestionHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
     protected void showDialog() {
         View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        MarkDeerDialog markDeerDialog = new MarkDeerDialog(mView, imm);
-        final AlertDialog dialog = markDeerDialog.createDialog( MainActivity.this, suggestionHandler);
-        markDeerDialog.openDialog(dialog);
+        MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm);
+        final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
+        markDialogCreator.openDialog(dialog);
         createActionButtonsForMarkDeerDialog(mView, dialog, imm);
     }
 
