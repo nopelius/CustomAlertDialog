@@ -22,11 +22,13 @@ public class MarkDeerDialog extends AppCompatActivity {
     View mView;
     InputMethodManager imm;
     boolean ownerSelected;
+    EarMarkImageSelector earMarkImageSelector;
 
     public MarkDeerDialog(View mView, InputMethodManager imm) {
         this.mView = mView;
         this.imm = imm;
         this.ownerSelected = false;
+        this.earMarkImageSelector = new EarMarkImageSelector();
     }
 
     public AlertDialog createDialog(Context context, SuggestionHandler suggestionsHandler) {
@@ -86,26 +88,8 @@ public class MarkDeerDialog extends AppCompatActivity {
 
     private void setEarMarkImage(String owner) {
         ImageView image = mView.findViewById(R.id.imageView);
-        if(owner.equals("Simo Siivola")) {
-            image.setImageResource(R.drawable.simon_merkki);
-            ownerSelected = true;
-        } else if (owner.equals("Kullervo Kullanhuuhtoja")) {
-            image.setImageResource(R.drawable.kullervonmerkki);
-            ownerSelected = true;
-        } else {
-            if(ownerSelected) {
-                setRandomPlaceholderImage(image);
-            }
-            ownerSelected = false;
+        if(earMarkImageSelector.imageShouldBeChanged(owner)){
+            image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
         }
-    }
-
-    private void setRandomPlaceholderImage(ImageView image) {
-        List<Integer> givenList = Arrays.asList(
-                R.drawable.poro, R.drawable.korvamerkki
-        );
-        Random rand = new Random();
-        int randomElement = givenList.get(rand.nextInt(givenList.size()));
-        image.setImageResource(randomElement);
     }
 }
