@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,12 +20,14 @@ public class MarkDialogCreator extends AppCompatActivity {
 
     View mView;
     InputMethodManager imm;
+    String msg;
     boolean ownerSelected;
     EarMarkImageSelector earMarkImageSelector;
 
-    public MarkDialogCreator(View mView, InputMethodManager imm) {
+    public MarkDialogCreator(View mView, InputMethodManager imm, String msg) {
         this.mView = mView;
         this.imm = imm;
+        this.msg = msg;
         this.ownerSelected = false;
         this.earMarkImageSelector = new EarMarkImageSelector();
     }
@@ -34,6 +37,8 @@ public class MarkDialogCreator extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 context, android.R.layout.simple_dropdown_item_1line, suggestionsHandler.owners
         );
+        TextView title = mView.findViewById(R.id.textView);
+        title.setText(this.msg);
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setThreshold(1);
         textView.setAdapter(adapter);

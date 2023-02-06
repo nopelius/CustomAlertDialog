@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.customalertdialog.dialogs.MarkDialogCreator;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
@@ -27,32 +28,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button openDialogButton = findViewById(R.id.mark);
-        openDialogButton.setOnClickListener(v -> showMarkDialog());
+        openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12"));
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
-        openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog());
+        openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
 
         suggestionHandler = new SuggestionHandler(OWNERS);
     }
 
-    protected void showMarkDialog() {
-        View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm);
-        final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
-        markDialogCreator.openDialog(dialog);
-        createActionButtonsForMarkDeerDialog(mView, dialog, imm);
-    }
-
-    protected void showMarkOrRemoveDialog() {
+    protected void showMarkOrRemoveDialog(int deerNumber) {
         View mView = getLayoutInflater().inflate(R.layout.remark_or_remove_dialog, null);
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
+        TextView txt = mView.findViewById(R.id.textView);
+        txt.setText("Mitä haluat tehdä vasalle numero: " + deerNumber);
         dialog.show();
-        Button cancelButton = mView.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v -> {
+        Button remarkButton = mView.findViewById(R.id.remarkButton);
+        remarkButton.setOnClickListener(v -> {
             dialog.cancel();
+            showMarkDialog("Merkkaa uudelleen vasa: " + deerNumber);
         });
+        Button cancelButton = mView.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(v -> dialog.cancel());
+    }
+
+    protected void showMarkDialog(String msg) {
+        View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm, msg);
+        final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
+        markDialogCreator.openDialog(dialog);
+        createActionButtonsForMarkDeerDialog(mView, dialog, imm);
     }
 
     private void createActionButtonsForMarkDeerDialog(View mView, AlertDialog dialog, InputMethodManager imm) {
