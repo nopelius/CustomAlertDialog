@@ -1,6 +1,7 @@
 package com.example.customalertdialog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,14 +10,19 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.customalertdialog.dialogs.MarkDialogCreator;
+import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        SearchDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
+    Toast t;
 
     private static final String[] OWNERS = new String[] {
       "Simo Siivola", "Pasi Poromies", "Lassi Lapinmies", "Laila Lakkasuo", "Repa Revontuli",
@@ -31,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
         openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12"));
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
         openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
+
+        ImageButton searchButton = findViewById(R.id.imageButton);
+        searchButton.setOnClickListener(v -> {
+            SearchDialogFragment searchDialog = new SearchDialogFragment();
+            searchDialog.show(getSupportFragmentManager(), "example");
+        });
 
         suggestionHandler = new SuggestionHandler(OWNERS);
     }
@@ -78,4 +90,17 @@ public class MainActivity extends AppCompatActivity {
             dialog.cancel();
         });
     }
+
+    @Override
+    public void markDeer(DialogFragment dialog, int deerNumber) {
+        dialog.getDialog().cancel();
+        makeToast("Merkattiin vasa: " + deerNumber);
+    }
+
+    private void makeToast(String s) {
+        if (t != null) t.cancel();
+        t = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT);
+        t.show();
+    }
+
 }

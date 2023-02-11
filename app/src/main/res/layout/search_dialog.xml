@@ -14,55 +14,16 @@
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         android:layout_marginTop="7dp"
-        android:text="Merkkaa omistaja vasalle:"
+        android:text="Hae vasaa:"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textView" />
-
-    <LinearLayout
-        android:id="@+id/suggestionsWrap"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/autoCompleteTextView"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/suggestion1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="First"
-            android:textSize="11sp"
-            android:layout_weight="1" />
-        <Button
-            android:id="@+id/suggestion2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Second"
-            android:textSize="11sp"
-            android:layout_weight="1" />
-        <Button
-            android:id="@+id/suggestion3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Third"
-            android:textSize="11sp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/actionsWrap"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/suggestionsWrap"
+        android:layout_below="@id/editTextNumber"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,12 +34,13 @@
             android:layout_height="55dp"
             android:text="Peruuta"
             android:layout_weight="1"/>
+
         <Button
-            android:id="@+id/markButton"
+            android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
-            android:text="Merkkaa"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Muokkaa" />
 
     </LinearLayout>
 
@@ -95,4 +57,15 @@
         android:layout_marginEnd="30dp"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/korvamerkki" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:ems="10"
+        android:inputType="number" />
 </RelativeLayout>
