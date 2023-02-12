@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements
         SearchDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
+    InputMethodManager imm;
     Toast t;
 
     private static final String[] OWNERS = new String[] {
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        suggestionHandler = new SuggestionHandler(OWNERS);
+
         Button openDialogButton = findViewById(R.id.mark);
         openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12"));
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
@@ -43,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements
             SearchDialogFragment searchDialog = new SearchDialogFragment();
             searchDialog.show(getSupportFragmentManager(), "example");
         });
-
-        suggestionHandler = new SuggestionHandler(OWNERS);
     }
 
     protected void showMarkOrRemoveDialog(int deerNumber) {
@@ -66,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements
 
     protected void showMarkDialog(String msg) {
         View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm, msg);
         final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
         markDialogCreator.openDialog(dialog);
@@ -89,6 +91,16 @@ public class MainActivity extends AppCompatActivity implements
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
             dialog.cancel();
         });
+    }
+
+    @Override
+    public void openTheInputs(DialogFragment dialog) {
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    @Override
+    public void closeTheInputs(DialogFragment dialog, EditText editText) {
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     @Override
