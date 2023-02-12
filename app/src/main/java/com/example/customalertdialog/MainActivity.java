@@ -19,6 +19,8 @@ import com.example.customalertdialog.dialogs.MarkDialogCreator;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements
         SearchDialogFragment.DialogListener {
 
@@ -43,10 +45,15 @@ public class MainActivity extends AppCompatActivity implements
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
         openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
 
+        ArrayList<Integer> unmarkedDeer = new ArrayList<>();
+        unmarkedDeer.add(1);
+        unmarkedDeer.add(2);
+        unmarkedDeer.add(10);
+
         ImageButton searchButton = findViewById(R.id.imageButton);
         searchButton.setOnClickListener(v -> {
-            SearchDialogFragment searchDialog = new SearchDialogFragment();
-            searchDialog.show(getSupportFragmentManager(), "example");
+            DialogFragment newFragment = SearchDialogFragment.newInstance(unmarkedDeer);
+            newFragment.show(getSupportFragmentManager(), "dialog");
         });
     }
 

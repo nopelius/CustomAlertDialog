@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,19 @@ import java.util.ArrayList;
 public class SearchDialogFragment extends DialogFragment {
 
     DialogListener listener;
-    MarkList markedDeer;
-    ArrayList<Integer> unmarkedDeerNumbers;
     EditText numberTextField;
+    ArrayList<Integer> unmarkedDeer;
+
+    public static SearchDialogFragment newInstance(ArrayList<Integer> unmarkedDeer) {
+        SearchDialogFragment f = new SearchDialogFragment();
+
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putIntegerArrayList("unmarkedDeer", unmarkedDeer);
+        f.setArguments(args);
+
+        return f;
+    }
 
     public interface DialogListener {
         void markDeer(DialogFragment dialog, int deerNumber);
@@ -47,6 +59,7 @@ public class SearchDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        unmarkedDeer = getArguments().getIntegerArrayList("unmarkedDeer");
         View mView = getLayoutInflater().inflate(R.layout.search_dialog, null);
 
         numberTextField = mView.findViewById(R.id.editTextNumber);
@@ -59,15 +72,40 @@ public class SearchDialogFragment extends DialogFragment {
         //getArguments().getSerializable("markList");
 
         Button searchButton = mView.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(v -> listener.markDeer(
-                SearchDialogFragment.this,
-                Integer.parseInt(numberTextField.getText().toString())
-        ));
+        searchButton.setOnClickListener(v -> {
+            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
+            listener.markDeer(
+                    SearchDialogFragment.this,
+                    Integer.parseInt(numberTextField.getText().toString())
+            );
+        });
+        searchButton.setEnabled(false);
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> {
             listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
             SearchDialogFragment.this.getDialog().cancel();
+        });
+
+        numberTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!charSequence.toString().equals("")) {
+                    searchButton.setEnabled(
+                            unmarkedDeer.contains(Integer.parseInt(charSequence.toString()))
+                    );
+                } else {
+                    searchButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
         return builder.create();
     }
