@@ -45,6 +45,7 @@ public class SearchDialogFragment extends DialogFragment {
 
     public interface DialogListener {
         void markDeer(DialogFragment dialog, int deerNumber);
+        void changeDeer(DialogFragment dialog, int deerNumber);
         void openTheInputs(DialogFragment dialog);
         void closeTheInputs(DialogFragment dialog, EditText text);
     }
@@ -78,15 +79,7 @@ public class SearchDialogFragment extends DialogFragment {
         builder.setView(mView);
 
         //getArguments().getSerializable("markList");
-
         Button searchButton = mView.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(v -> {
-            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
-            listener.markDeer(
-                    SearchDialogFragment.this,
-                    Integer.parseInt(numberTextField.getText().toString())
-            );
-        });
         searchButton.setEnabled(false);
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
@@ -104,22 +97,17 @@ public class SearchDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 ImageView image = mView.findViewById(R.id.imageView);
                 TextView txt = mView.findViewById(R.id.textView);
+                TextView markerInfo = mView.findViewById(R.id.markerInfo);
                 if(!charSequence.toString().equals("")) {
                     int deerNumber = Integer.parseInt(charSequence.toString());
                     if(unmarkedDeer.contains(deerNumber)) {
-                        image.setImageResource(R.drawable.tyhjatkorvat);
-                        txt.setText("Merkkaamaton vasa");
-                        searchButton.setEnabled(true);
-                        searchButton.setText("Merkkaa");
+                        listenToMarkDeer(mView);
                     } else if(markList.findMarkWithNumber(deerNumber) != null) {
-                        String owner = markList.findMarkWithNumber(deerNumber).getOwner();
-                        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
-                        txt.setText(deerNumber + ": " + owner);
-                        searchButton.setEnabled(true);
-                        searchButton.setText("Muokkaa");
+                        listenToChangeDeer(mView, markList, deerNumber);
                     } else {
                         image.setImageResource(R.drawable.revontulet);
                         txt.setText("Vasaa ei löydy.");
+                        markerInfo.setText("");
                         searchButton.setEnabled(false);
                         searchButton.setText("Haku");
                     }
@@ -127,6 +115,7 @@ public class SearchDialogFragment extends DialogFragment {
                     searchButton.setEnabled(false);
                     searchButton.setText("Haku");
                     txt.setText("Etsi vasaa");
+                    markerInfo.setText("");
                     image.setImageResource(R.drawable.vasa);
                 }
             }
@@ -144,6 +133,51 @@ public class SearchDialogFragment extends DialogFragment {
             getDialog().setCanceledOnTouchOutside(false);
         }
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void listenToMarkDeer(View mView) {
+        ImageView image = mView.findViewById(R.id.imageView);
+        TextView txt = mView.findViewById(R.id.textView);
+        TextView markerInfo = mView.findViewById(R.id.markerInfo);
+        Button searchButton = mView.findViewById(R.id.searchButton);
+
+        image.setImageResource(R.drawable.tyhjatkorvat);
+        txt.setText("Merkkaamaton vasa");
+        markerInfo.setText("");
+
+        searchButton.setOnClickListener(v -> {
+            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
+            listener.markDeer(
+                    SearchDialogFragment.this,
+                    Integer.parseInt(numberTextField.getText().toString())
+            );
+        });
+        searchButton.setEnabled(true);
+        searchButton.setText("Merkkaa");
+    }
+
+    private void listenToChangeDeer(View mView, MarkList markList, int deerNumber) {
+        ImageView image = mView.findViewById(R.id.imageView);
+        TextView txt = mView.findViewById(R.id.textView);
+        TextView markerInfo = mView.findViewById(R.id.markerInfo);
+        Button searchButton = mView.findViewById(R.id.searchButton);
+        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
+
+        String owner = markList.findMarkWithNumber(deerNumber).getOwner();
+        String marker = markList.findMarkWithNumber(deerNumber).getMarker();
+        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
+        txt.setText(deerNumber + ": " + owner);
+        markerInfo.setText("Merkkaaja: " + marker);
+        searchButton.setEnabled(true);
+        searchButton.setText("Muokkaa");
+
+        searchButton.setOnClickListener(v -> {
+            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
+            listener.changeDeer(
+                    SearchDialogFragment.this,
+                    Integer.parseInt(numberTextField.getText().toString())
+            );
+        });
     }
 }
 

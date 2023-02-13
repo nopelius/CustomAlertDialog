@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
 
         MarkList markList = new MarkList();
         markList.addMark("Jussi", "Pekka", 5);
-        markList.addMark("Simo Siivola", "Pekka", 50);
+        markList.addMark("Simo Siivola", "Harri", 50);
 
 
         ImageButton searchButton = findViewById(R.id.imageButton);
@@ -119,7 +119,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void markDeer(DialogFragment dialog, int deerNumber) {
         dialog.getDialog().cancel();
-        makeToast("Merkattiin vasa: " + deerNumber);
+        makeToast("Merkataan vasa: " + deerNumber);
+    }
+
+    @Override
+    public void changeDeer(DialogFragment dialog, int deerNumber) {
+        dialog.getDialog().cancel();
+        makeToast("Muokataan vasa: " + deerNumber);
     }
 
     private void makeToast(String s) {
