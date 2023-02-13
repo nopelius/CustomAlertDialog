@@ -10,8 +10,21 @@ public class MarkList {
         this.marks = new ArrayList<>();
     }
 
+    public MarkList(ArrayList<Mark> marks) {
+        this.marks = marks;
+    }
+
     public List<Mark> getMarks() {
         return marks;
+    }
+
+    public Mark findMarkWithNumber(int deerNumber) {
+        for(Mark mark : getMarks()) {
+            if(mark.getDeerNumber() == deerNumber) {
+                return mark;
+            }
+        }
+        return null;
     }
 
     public void addMark(String owner, String marker, int deerNumber) {

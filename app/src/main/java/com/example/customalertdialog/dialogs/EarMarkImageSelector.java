@@ -39,7 +39,8 @@ public class EarMarkImageSelector {
 
     private int randomPlaceholderImage() {
         List<Integer> givenList = Arrays.asList(
-                R.drawable.poro, R.drawable.korvamerkki
+                R.drawable.poro, R.drawable.korvamerkki, R.drawable.poronummella,
+                R.drawable.luontoa, R.drawable.hyttynen
         );
         Random rand = new Random();
         return givenList.get(rand.nextInt(givenList.size()));

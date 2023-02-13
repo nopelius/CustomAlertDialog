@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.customalertdialog.dialogs.MarkDialogCreator;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
+import com.example.customalertdialog.entities.MarkList;
 
 import java.util.ArrayList;
 
@@ -50,9 +51,14 @@ public class MainActivity extends AppCompatActivity implements
         unmarkedDeer.add(2);
         unmarkedDeer.add(10);
 
+        MarkList markList = new MarkList();
+        markList.addMark("Jussi", "Pekka", 5);
+        markList.addMark("Simo Siivola", "Pekka", 50);
+
+
         ImageButton searchButton = findViewById(R.id.imageButton);
         searchButton.setOnClickListener(v -> {
-            DialogFragment newFragment = SearchDialogFragment.newInstance(unmarkedDeer);
+            DialogFragment newFragment = SearchDialogFragment.newInstance(unmarkedDeer, markList);
             newFragment.show(getSupportFragmentManager(), "dialog");
         });
     }

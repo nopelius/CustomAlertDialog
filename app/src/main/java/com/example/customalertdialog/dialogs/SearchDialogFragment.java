@@ -12,13 +12,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
+import com.example.customalertdialog.entities.Mark;
 import com.example.customalertdialog.entities.MarkList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SearchDialogFragment extends DialogFragment {
@@ -27,12 +31,13 @@ public class SearchDialogFragment extends DialogFragment {
     EditText numberTextField;
     ArrayList<Integer> unmarkedDeer;
 
-    public static SearchDialogFragment newInstance(ArrayList<Integer> unmarkedDeer) {
+    public static SearchDialogFragment newInstance(ArrayList<Integer> unmarkedDeer, MarkList markList) {
         SearchDialogFragment f = new SearchDialogFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntegerArrayList("unmarkedDeer", unmarkedDeer);
+        args.putSerializable("markList", (Serializable) markList.getMarks());
         f.setArguments(args);
 
         return f;
@@ -59,7 +64,10 @@ public class SearchDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
         unmarkedDeer = getArguments().getIntegerArrayList("unmarkedDeer");
+        ArrayList<Mark> marks = (ArrayList<Mark>) getArguments().getSerializable("markList");
+        MarkList markList = new MarkList(marks);
         View mView = getLayoutInflater().inflate(R.layout.search_dialog, null);
 
         numberTextField = mView.findViewById(R.id.editTextNumber);
@@ -94,12 +102,32 @@ public class SearchDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                ImageView image = mView.findViewById(R.id.imageView);
+                TextView txt = mView.findViewById(R.id.textView);
                 if(!charSequence.toString().equals("")) {
-                    searchButton.setEnabled(
-                            unmarkedDeer.contains(Integer.parseInt(charSequence.toString()))
-                    );
+                    int deerNumber = Integer.parseInt(charSequence.toString());
+                    if(unmarkedDeer.contains(deerNumber)) {
+                        image.setImageResource(R.drawable.tyhjatkorvat);
+                        txt.setText("Merkkaamaton vasa");
+                        searchButton.setEnabled(true);
+                        searchButton.setText("Merkkaa");
+                    } else if(markList.findMarkWithNumber(deerNumber) != null) {
+                        String owner = markList.findMarkWithNumber(deerNumber).getOwner();
+                        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
+                        txt.setText(deerNumber + ": " + owner);
+                        searchButton.setEnabled(true);
+                        searchButton.setText("Muokkaa");
+                    } else {
+                        image.setImageResource(R.drawable.revontulet);
+                        txt.setText("Vasaa ei löydy.");
+                        searchButton.setEnabled(false);
+                        searchButton.setText("Haku");
+                    }
                 } else {
                     searchButton.setEnabled(false);
+                    searchButton.setText("Haku");
+                    txt.setText("Etsi vasaa");
+                    image.setImageResource(R.drawable.vasa);
                 }
             }
 
