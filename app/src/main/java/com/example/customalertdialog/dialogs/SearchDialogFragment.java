@@ -30,15 +30,17 @@ public class SearchDialogFragment extends DialogFragment {
     EditText numberTextField;
     ArrayList<Integer> unmarkedDeer;
 
+    ImageView image;
+    TextView txt;
+    TextView markerInfo;
+    Button searchButton;
+
     public static SearchDialogFragment newInstance(ArrayList<Integer> unmarkedDeer, MarkList markList) {
         SearchDialogFragment f = new SearchDialogFragment();
-
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putIntegerArrayList("unmarkedDeer", unmarkedDeer);
         args.putSerializable("markList", (Serializable) markList.getMarks());
         f.setArguments(args);
-
         return f;
     }
 
@@ -62,22 +64,36 @@ public class SearchDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
         unmarkedDeer = getArguments().getIntegerArrayList("unmarkedDeer");
         ArrayList<Mark> marks = (ArrayList<Mark>) getArguments().getSerializable("markList");
         MarkList markList = new MarkList(marks);
-        View mView = getLayoutInflater().inflate(R.layout.search_dialog, null);
 
-        numberTextField = mView.findViewById(R.id.editTextNumber);
-        numberTextField.setFocusableInTouchMode(true);
-        numberTextField.requestFocus();
-        listener.openTheInputs(SearchDialogFragment.this);
+        View mView = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        findElements(mView);
+        addActionButtons(mView);
+        addSearchText(mView, markList);
 
         builder.setView(mView);
+        return builder.create();
+    }
 
-        //getArguments().getSerializable("markList");
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getDialog() != null) {
+            getDialog().setCanceledOnTouchOutside(false);
+        }
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void findElements(View mView) {
+        image = mView.findViewById(R.id.imageView);
+        txt = mView.findViewById(R.id.textView);
+        markerInfo = mView.findViewById(R.id.markerInfo);
+        searchButton = mView.findViewById(R.id.searchButton);
+    }
+
+    private void addActionButtons(View mView) {
         Button searchButton = mView.findViewById(R.id.searchButton);
         searchButton.setEnabled(false);
 
@@ -86,7 +102,13 @@ public class SearchDialogFragment extends DialogFragment {
             listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
             SearchDialogFragment.this.getDialog().cancel();
         });
+    }
 
+    private void addSearchText(View mView, MarkList markList) {
+        numberTextField = mView.findViewById(R.id.editTextNumber);
+        numberTextField.setFocusableInTouchMode(true);
+        numberTextField.requestFocus();
+        listener.openTheInputs(SearchDialogFragment.this);
         numberTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -100,9 +122,9 @@ public class SearchDialogFragment extends DialogFragment {
                 if(!charSequence.toString().equals("")) {
                     int deerNumber = Integer.parseInt(charSequence.toString());
                     if(unmarkedDeer.contains(deerNumber)) {
-                        listenToMarkDeer(mView, deerNumber);
+                        listenToMarkDeer(deerNumber);
                     } else if(markList.findMarkWithNumber(deerNumber) != null) {
-                        listenToChangeDeer(mView, markList, deerNumber);
+                        listenToChangeDeer(markList, deerNumber);
                     } else {
                         image.setImageResource(R.drawable.revontulet);
                         txt.setText("Vasaa ei löydy.");
@@ -123,23 +145,9 @@ public class SearchDialogFragment extends DialogFragment {
             public void afterTextChanged(Editable editable) {
             }
         });
-        return builder.create();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getDialog() != null) {
-            getDialog().setCanceledOnTouchOutside(false);
-        }
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void listenToMarkDeer(View mView, int deerNumber) {
-        ImageView image = mView.findViewById(R.id.imageView);
-        TextView txt = mView.findViewById(R.id.textView);
-        TextView markerInfo = mView.findViewById(R.id.markerInfo);
-        Button searchButton = mView.findViewById(R.id.searchButton);
-
+    private void listenToMarkDeer(int deerNumber) {
         image.setImageResource(R.drawable.tyhjatkorvat);
         txt.setText(deerNumber + ": merkkaamaton vasa");
         markerInfo.setText("");
@@ -153,13 +161,8 @@ public class SearchDialogFragment extends DialogFragment {
         searchButton.setText("Merkkaa");
     }
 
-    private void listenToChangeDeer(View mView, MarkList markList, int deerNumber) {
-        ImageView image = mView.findViewById(R.id.imageView);
-        TextView txt = mView.findViewById(R.id.textView);
-        TextView markerInfo = mView.findViewById(R.id.markerInfo);
-        Button searchButton = mView.findViewById(R.id.searchButton);
+    private void listenToChangeDeer(MarkList markList, int deerNumber) {
         EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
-
         String owner = markList.findMarkWithNumber(deerNumber).getOwner();
         String marker = markList.findMarkWithNumber(deerNumber).getMarker();
         image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
