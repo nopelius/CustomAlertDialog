@@ -63,13 +63,35 @@ public class MarkDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
 
-        String[] owners = getArguments().getStringArray("owners");
+        AutoCompleteTextView textView = setMarkingTextField(mView);
+        setTitle(mView);
+        setSuggestionButtons(mView, textView);
+        createActionButtonsForMarkDeerDialog(mView, textView, getArguments().getInt("deerNumber"));
+
+        builder.setView(mView);
+        return builder.create();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getDialog() != null) {
+            getDialog().setCanceledOnTouchOutside(false);
+        }
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    private void setTitle(View mView) {
         String alertMessage = getArguments().getString("theMessage");
+        TextView title = mView.findViewById(R.id.textView);
+        title.setText(alertMessage);
+    }
+
+    private AutoCompleteTextView setMarkingTextField(View mView) {
+        String[] owners = getArguments().getStringArray("owners");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_dropdown_item_1line, owners
         );
-        TextView title = mView.findViewById(R.id.textView);
-        title.setText(alertMessage);
+
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         textView.setThreshold(1);
         textView.setAdapter(adapter);
@@ -92,25 +114,12 @@ public class MarkDialogFragment extends DialogFragment {
         textView.setFocusableInTouchMode(true);
         textView.requestFocus();
         listener.openTheInputs(MarkDialogFragment.this);
+        return textView;
 
+    }
+
+    private void setSuggestionButtons(View mView, AutoCompleteTextView textView) {
         String[] suggestions = getArguments().getStringArray("suggestedOwners");
-        setSuggestionButtons(mView, textView, suggestions);
-
-        createActionButtonsForMarkDeerDialog(mView, textView, getArguments().getInt("deerNumber"));
-        builder.setView(mView);
-
-        return builder.create();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getDialog() != null) {
-            getDialog().setCanceledOnTouchOutside(false);
-        }
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void setSuggestionButtons(View mView, AutoCompleteTextView textView, String[] suggestions) {
         int[] buttonIds = new int[]{R.id.suggestion1, R.id.suggestion2, R.id.suggestion3};
         for(int i=0; i<3; i++) {
             Button suggestion = mView.findViewById(buttonIds[i]);

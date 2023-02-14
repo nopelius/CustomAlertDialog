@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
         TextView txt = mView.findViewById(R.id.textView);
-        txt.setText("Mitä haluat tehdä vasalle numero: " + deerNumber);
+        txt.setText("Vasa: " + deerNumber);
         dialog.show();
         Button remarkButton = mView.findViewById(R.id.remarkButton);
         remarkButton.setOnClickListener(v -> {
