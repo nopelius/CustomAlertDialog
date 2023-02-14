@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements
         suggestionHandler = new SuggestionHandler(OWNERS);
 
         Button openDialogButton = findViewById(R.id.mark);
-        openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12"));
+        openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12", 12));
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
         openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
 
@@ -76,13 +76,13 @@ public class MainActivity extends AppCompatActivity implements
         Button remarkButton = mView.findViewById(R.id.remarkButton);
         remarkButton.setOnClickListener(v -> {
             dialog.cancel();
-            showMarkDialog("Merkkaa uudelleen vasa: " + deerNumber);
+            showMarkDialog("Merkkaa uudelleen vasa: " + deerNumber, deerNumber);
         });
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> dialog.cancel());
     }
 
-    protected void showMarkDialog(String msg) {
+    protected void showMarkDialog(String msg, int deerNumber) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Create and show the dialog.
         DialogFragment markFragment = MarkDialogFragment.newInstance(
-                OWNERS, suggestionHandler.getSuggestions(), msg
+                OWNERS, suggestionHandler.getSuggestions(), msg, deerNumber
         );
         markFragment.show(getSupportFragmentManager(), "anotherDialog");
     }
@@ -108,9 +108,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void markDeer(DialogFragment dialog, int deerNumber) {
+    public void markDeer(DialogFragment dialog, EditText editText, int deerNumber) {
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         dialog.getDialog().cancel();
-        makeToast("Merkataan vasa: " + deerNumber);
+        showMarkDialog("Merkataan vasa: " + deerNumber, deerNumber);
     }
 
     @Override
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void markDeerToOwner(DialogFragment dialog, int deerNumber, String owner) {
+        suggestionHandler.setSuggestion(owner);
         dialog.getDialog().cancel();
         makeToast("Merkattiin: " + deerNumber + " omistajalle: " + owner);
 

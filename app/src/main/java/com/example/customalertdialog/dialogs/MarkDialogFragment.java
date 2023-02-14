@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class MarkDialogFragment extends DialogFragment {
     DialogListener listener;
 
     public static MarkDialogFragment newInstance(
-            String[] owners, String[] suggestedOwners, String theMessage
+            String[] owners, String[] suggestedOwners, String theMessage, int deerNumber
     ) {
         MarkDialogFragment f = new MarkDialogFragment();
 
@@ -33,6 +34,7 @@ public class MarkDialogFragment extends DialogFragment {
         args.putStringArray("owners", owners);
         args.putStringArray("suggestedOwners", suggestedOwners);
         args.putString("theMessage", theMessage);
+        args.putInt("deerNumber", deerNumber);
 
         f.setArguments(args);
 
@@ -41,6 +43,8 @@ public class MarkDialogFragment extends DialogFragment {
 
     public interface DialogListener {
         void markDeerToOwner(DialogFragment dialog, int deerNumber, String owner);
+        void openTheInputs(DialogFragment dialog);
+        void closeTheInputs(DialogFragment dialog, EditText text);
     }
 
     @Override
@@ -56,7 +60,6 @@ public class MarkDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
 
@@ -86,10 +89,14 @@ public class MarkDialogFragment extends DialogFragment {
             public void afterTextChanged(Editable editable) {
             }
         });
+        textView.setFocusableInTouchMode(true);
+        textView.requestFocus();
+        listener.openTheInputs(MarkDialogFragment.this);
+
         String[] suggestions = getArguments().getStringArray("suggestedOwners");
         setSuggestionButtons(mView, textView, suggestions);
 
-        createActionButtonsForMarkDeerDialog(mView, 20);
+        createActionButtonsForMarkDeerDialog(mView, textView, getArguments().getInt("deerNumber"));
         builder.setView(mView);
 
         return builder.create();
@@ -126,16 +133,19 @@ public class MarkDialogFragment extends DialogFragment {
         }
     }
 
-    private void createActionButtonsForMarkDeerDialog(View mView, int deerNumber) {
+    private void createActionButtonsForMarkDeerDialog(View mView, EditText edit, int deerNumber) {
         AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
         Button markButton = mView.findViewById(R.id.markButton);
         markButton.setOnClickListener(v-> {
+            listener.closeTheInputs(MarkDialogFragment.this, textView);
             listener.markDeerToOwner(MarkDialogFragment.this, deerNumber, textView.getText().toString());
         });
         markButton.setEnabled(false);
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v-> {
+            listener.closeTheInputs(MarkDialogFragment.this, edit);
+            MarkDialogFragment.this.getDialog().cancel();
         });
     }
 }
