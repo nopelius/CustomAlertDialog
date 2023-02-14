@@ -41,21 +41,24 @@
             android:layout_height="wrap_content"
             android:text="First"
             android:textSize="11sp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:width="0px"/>
         <Button
             android:id="@+id/suggestion2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Second"
             android:textSize="11sp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:width="0px"/>
         <Button
             android:id="@+id/suggestion3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Third"
             android:textSize="11sp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:width="0px"/>
 
     </LinearLayout>
 
