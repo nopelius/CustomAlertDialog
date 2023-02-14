@@ -4,18 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.customalertdialog.dialogs.MarkDialogCreator;
+import com.example.customalertdialog.dialogs.MarkDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
 import com.example.customalertdialog.entities.MarkList;
@@ -23,7 +24,7 @@ import com.example.customalertdialog.entities.MarkList;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
-        SearchDialogFragment.DialogListener {
+        MarkDialogFragment.DialogListener, SearchDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements
         ArrayList<Integer> unmarkedDeer = new ArrayList<>();
         unmarkedDeer.add(1);
         unmarkedDeer.add(2);
+        unmarkedDeer.add(3);
         unmarkedDeer.add(10);
 
         MarkList markList = new MarkList();
@@ -81,29 +83,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     protected void showMarkDialog(String msg) {
-        View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
-        MarkDialogCreator markDialogCreator = new MarkDialogCreator(mView, imm, msg);
-        final AlertDialog dialog = markDialogCreator.createDialog( MainActivity.this, suggestionHandler);
-        markDialogCreator.openDialog(dialog);
-        createActionButtonsForMarkDeerDialog(mView, dialog, imm);
-    }
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
 
-    private void createActionButtonsForMarkDeerDialog(View mView, AlertDialog dialog, InputMethodManager imm) {
-        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
-
-        Button markButton = mView.findViewById(R.id.markButton);
-        markButton.setOnClickListener(v-> {
-            suggestionHandler.setSuggestion(textView.getText().toString());
-            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-            dialog.cancel();
-        });
-        markButton.setEnabled(false);
-
-        Button cancelButton = mView.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v-> {
-            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-            dialog.cancel();
-        });
+        // Create and show the dialog.
+        DialogFragment markFragment = MarkDialogFragment.newInstance(
+                OWNERS, suggestionHandler.getSuggestions(), msg
+        );
+        markFragment.show(getSupportFragmentManager(), "anotherDialog");
     }
 
     @Override
@@ -126,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements
     public void changeDeer(DialogFragment dialog, int deerNumber) {
         dialog.getDialog().cancel();
         makeToast("Muokataan vasa: " + deerNumber);
+    }
+
+    @Override
+    public void markDeerToOwner(DialogFragment dialog, int deerNumber, String owner) {
+        dialog.getDialog().cancel();
+        makeToast("Merkattiin: " + deerNumber + " omistajalle: " + owner);
+
     }
 
     private void makeToast(String s) {

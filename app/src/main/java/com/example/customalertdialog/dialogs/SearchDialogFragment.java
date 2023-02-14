@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,7 +55,7 @@ public class SearchDialogFragment extends DialogFragment {
         try {
             listener = (DialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Must implement");
+            throw new ClassCastException("Must implement: " + e);
         }
     }
 
@@ -101,7 +100,7 @@ public class SearchDialogFragment extends DialogFragment {
                 if(!charSequence.toString().equals("")) {
                     int deerNumber = Integer.parseInt(charSequence.toString());
                     if(unmarkedDeer.contains(deerNumber)) {
-                        listenToMarkDeer(mView);
+                        listenToMarkDeer(mView, deerNumber);
                     } else if(markList.findMarkWithNumber(deerNumber) != null) {
                         listenToChangeDeer(mView, markList, deerNumber);
                     } else {
@@ -135,21 +134,21 @@ public class SearchDialogFragment extends DialogFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void listenToMarkDeer(View mView) {
+    private void listenToMarkDeer(View mView, int deerNumber) {
         ImageView image = mView.findViewById(R.id.imageView);
         TextView txt = mView.findViewById(R.id.textView);
         TextView markerInfo = mView.findViewById(R.id.markerInfo);
         Button searchButton = mView.findViewById(R.id.searchButton);
 
         image.setImageResource(R.drawable.tyhjatkorvat);
-        txt.setText("Merkkaamaton vasa");
+        txt.setText(deerNumber + ": merkkaamaton vasa");
         markerInfo.setText("");
 
         searchButton.setOnClickListener(v -> {
             listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
             listener.markDeer(
                     SearchDialogFragment.this,
-                    Integer.parseInt(numberTextField.getText().toString())
+                    deerNumber
             );
         });
         searchButton.setEnabled(true);
