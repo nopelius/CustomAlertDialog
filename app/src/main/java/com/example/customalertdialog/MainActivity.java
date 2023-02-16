@@ -3,20 +3,18 @@ package com.example.customalertdialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
+import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
 import com.example.customalertdialog.entities.Mark;
@@ -25,7 +23,8 @@ import com.example.customalertdialog.entities.MarkList;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
-        MarkDialogFragment.DialogListener, SearchDialogFragment.DialogListener {
+        MarkDialogFragment.DialogListener, SearchDialogFragment.DialogListener,
+        RemarkOrRemoveDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         Button openDialogButton = findViewById(R.id.mark);
         openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12", 12));
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
-        openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
+        openMarkOrRemoveDialogButton.setOnClickListener(v -> showRemarkOrRemoveDialog(20));
 
         unmarkedDeer = new ArrayList<>();
         unmarkedDeer.add(1);
@@ -70,24 +69,13 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    protected void showMarkOrRemoveDialog(int deerNumber) {
-        View mView = getLayoutInflater().inflate(R.layout.remark_or_remove_dialog, null);
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        TextView txt = mView.findViewById(R.id.textView);
-        txt.setText("Vasa: " + deerNumber);
-        dialog.show();
-        Button remarkButton = mView.findViewById(R.id.remarkButton);
-        remarkButton.setOnClickListener(v -> {
-            dialog.cancel();
-            showMarkDialog("Merkkaa uudelleen vasa: " + deerNumber, deerNumber);
-        });
-        Button cancelButton = mView.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v -> dialog.cancel());
+    protected void showRemarkOrRemoveDialog(int deerNumber) {
+        DialogFragment newFragment = RemarkOrRemoveDialogFragment.newInstance(deerNumber);
+        newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    protected void showMarkDialog(String msg, int deerNumber) {
+    @Override
+    public void showMarkDialog(String msg, int deerNumber) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {
