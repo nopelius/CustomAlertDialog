@@ -45,7 +45,7 @@ public class SearchDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
-        void markDeer(DialogFragment dialog, EditText edit, int deerNumber);
+        void closeDialogAndStartMarkingDeer(DialogFragment dialog, EditText edit, int deerNumber);
         void changeDeer(DialogFragment dialog, int deerNumber);
         void openTheInputs(DialogFragment dialog);
         void closeTheInputs(DialogFragment dialog, EditText text);
@@ -153,7 +153,7 @@ public class SearchDialogFragment extends DialogFragment {
         markerInfo.setText("");
 
         searchButton.setOnClickListener(v -> {
-            listener.markDeer(
+            listener.closeDialogAndStartMarkingDeer(
                     SearchDialogFragment.this, numberTextField, deerNumber
             );
         });

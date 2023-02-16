@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
+import com.example.customalertdialog.entities.Mark;
 import com.example.customalertdialog.entities.MarkList;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
     Toast t;
+    ArrayList<Integer> unmarkedDeer;
+    MarkList markList;
 
     private static final String[] OWNERS = new String[] {
       "Simo Siivola", "Pasi Poromies", "Lassi Lapinmies", "Laila Lakkasuo", "Repa Revontuli",
@@ -47,14 +50,16 @@ public class MainActivity extends AppCompatActivity implements
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
         openMarkOrRemoveDialogButton.setOnClickListener(v -> showMarkOrRemoveDialog(20));
 
-        ArrayList<Integer> unmarkedDeer = new ArrayList<>();
+        unmarkedDeer = new ArrayList<>();
         unmarkedDeer.add(1);
         unmarkedDeer.add(2);
         unmarkedDeer.add(3);
         unmarkedDeer.add(10);
+        unmarkedDeer.add(12);
 
-        MarkList markList = new MarkList();
+        markList = new MarkList();
         markList.addMark("Jussi", "Pekka", 5);
+        markList.addMark("Kalle", "Kanerva", 20);
         markList.addMark("Simo Siivola", "Harri", 50);
 
 
@@ -108,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void markDeer(DialogFragment dialog, EditText editText, int deerNumber) {
+    public void closeDialogAndStartMarkingDeer(DialogFragment dialog, EditText editText, int deerNumber) {
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         dialog.getDialog().cancel();
         showMarkDialog("Merkataan vasa: " + deerNumber, deerNumber);
@@ -117,14 +122,22 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void changeDeer(DialogFragment dialog, int deerNumber) {
         dialog.getDialog().cancel();
-        makeToast("Muokataan vasa: " + deerNumber);
+        showMarkDialog("Uudellenmerkataan vasa: " + deerNumber, deerNumber);
     }
 
     @Override
     public void markDeerToOwner(DialogFragment dialog, int deerNumber, String owner) {
         suggestionHandler.setSuggestion(owner);
         dialog.getDialog().cancel();
-        makeToast("Merkattiin: " + deerNumber + " omistajalle: " + owner);
+        if(unmarkedDeer.contains(deerNumber)) {
+            makeToast("Merkattiin vasa " + deerNumber + " omistajalle: " + owner);
+        } else if(markList.findMarkWithNumber(deerNumber) != null){
+            Mark previousMark = markList.findMarkWithNumber(deerNumber);
+            makeToast("Merkattiin käyttäjälle " + previousMark.getOwner() + " merkattu vasa " +
+                    deerNumber + " käyttäjälle: " + owner);
+        } else {
+            makeToast("Vasan merkkaamisessa tapahtui virhe - vasaa ei merkattu.");
+        }
 
     }
 
