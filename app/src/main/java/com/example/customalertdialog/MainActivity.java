@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements
 
         Button openDialogButton = findViewById(R.id.mark);
         openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12", 12));
-        Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
-        openMarkOrRemoveDialogButton.setOnClickListener(v -> showRemarkOrRemoveDialog(20));
 
         unmarkedDeer = new ArrayList<>();
         unmarkedDeer.add(1);
@@ -61,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements
         markList.addMark("Kalle", "Kanerva", 20);
         markList.addMark("Simo Siivola", "Harri", 50);
 
+        Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
+        openMarkOrRemoveDialogButton.setOnClickListener(
+                v -> showRemarkOrRemoveDialog(markList.findMarkWithNumber(20))
+        );
 
         ImageButton searchButton = findViewById(R.id.imageButton);
         searchButton.setOnClickListener(v -> {
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    protected void showRemarkOrRemoveDialog(int deerNumber) {
-        DialogFragment newFragment = RemarkOrRemoveDialogFragment.newInstance(deerNumber);
+    protected void showRemarkOrRemoveDialog(Mark mark) {
+        DialogFragment newFragment = RemarkOrRemoveDialogFragment.newInstance(mark);
         newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
@@ -108,9 +110,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void changeDeer(DialogFragment dialog, int deerNumber) {
+    public void changeDeer(DialogFragment dialog, Mark mark) {
         dialog.getDialog().cancel();
-        showMarkDialog("Uudellenmerkataan vasa: " + deerNumber, deerNumber);
+        showRemarkOrRemoveDialog(mark);
     }
 
     @Override
