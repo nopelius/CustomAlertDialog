@@ -60,7 +60,7 @@ public class RemarkOrRemoveDialogFragment extends DialogFragment {
         txt.setText("Vasa " + mark.getDeerNumber() + ": " + mark.getOwner());
 
         TextView markerTxt = mView.findViewById(R.id.markerInfo);
-        markerTxt.setText("Merkkaaja: " + mark.getMarker());
+        markerTxt.setText("Merkkaaja: " + mark.getMarker() + " (" + mark.getTime() + ")");
 
         Button remarkButton = mView.findViewById(R.id.remarkButton);
         remarkButton.setOnClickListener(v -> {

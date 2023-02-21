@@ -163,11 +163,12 @@ public class SearchDialogFragment extends DialogFragment {
 
     private void listenToChangeDeer(MarkList markList, int deerNumber) {
         EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
+        Mark mark = markList.findMarkWithNumber(deerNumber);
         String owner = markList.findMarkWithNumber(deerNumber).getOwner();
         String marker = markList.findMarkWithNumber(deerNumber).getMarker();
         image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
-        txt.setText(deerNumber + ": " + owner);
-        markerInfo.setText("Merkkaaja: " + marker);
+        txt.setText(deerNumber + ": " + mark.getOwner());
+        markerInfo.setText("Merkkaaja: " + mark.getMarker() + " (" + mark.getTime() + ")");
         searchButton.setEnabled(true);
         searchButton.setText("Muokkaa");
 
