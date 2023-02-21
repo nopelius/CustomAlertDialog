@@ -91,8 +91,6 @@ public class MarkDialogCreator extends AppCompatActivity {
 
     private void setEarMarkImage(String owner) {
         ImageView image = mView.findViewById(R.id.imageView);
-        if(earMarkImageSelector.imageShouldBeChanged(owner)){
-            image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
-        }
+        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
     }
 }

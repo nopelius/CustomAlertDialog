@@ -24,6 +24,7 @@ import com.example.customalertdialog.R;
 public class MarkDialogFragment extends DialogFragment {
 
     DialogListener listener;
+    EarMarkImageSelector earMarkImageSelector;
 
     public static MarkDialogFragment newInstance(
             String[] owners, String[] suggestedOwners, String theMessage, int deerNumber
@@ -62,11 +63,16 @@ public class MarkDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
+        earMarkImageSelector = new EarMarkImageSelector();
 
         AutoCompleteTextView textView = setMarkingTextField(mView);
         setTitle(mView);
         setSuggestionButtons(mView, textView);
-        createActionButtonsForMarkDeerDialog(mView, textView, getArguments().getInt("deerNumber"));
+        createActionButtonsForMarkDeerDialog(
+                mView, textView, getArguments().getInt("deerNumber")
+        );
+        ImageView image = mView.findViewById(R.id.imageView);
+        image.setImageResource(earMarkImageSelector.randomPlaceholderImage());
 
         builder.setView(mView);
         return builder.create();
@@ -136,10 +142,7 @@ public class MarkDialogFragment extends DialogFragment {
 
     private void setEarMarkImage(String owner, View mView) {
         ImageView image = mView.findViewById(R.id.imageView);
-        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
-        if(earMarkImageSelector.imageShouldBeChanged(owner)){
-            image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
-        }
+        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
     }
 
     private void createActionButtonsForMarkDeerDialog(View mView, EditText edit, int deerNumber) {
