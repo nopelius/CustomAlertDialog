@@ -127,8 +127,8 @@ public class SearchDialogFragment extends DialogFragment {
                         listenToChangeDeer(markList, deerNumber);
                     } else {
                         image.setImageResource(R.drawable.revontulet);
-                        txt.setText("Vasaa ei löydy.");
-                        markerInfo.setText("");
+                        txt.setText(deerNumber + " - 404: Vasaa ei löydy.");
+                        markerInfo.setText("tämä vasa taitaa olla jossakin aivan muualla...");
                         searchButton.setEnabled(false);
                         searchButton.setText("Haku");
                     }
@@ -164,9 +164,7 @@ public class SearchDialogFragment extends DialogFragment {
     private void listenToChangeDeer(MarkList markList, int deerNumber) {
         EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
         Mark mark = markList.findMarkWithNumber(deerNumber);
-        String owner = markList.findMarkWithNumber(deerNumber).getOwner();
-        String marker = markList.findMarkWithNumber(deerNumber).getMarker();
-        image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
+        image.setImageResource(earMarkImageSelector.getEarMarkImage(mark.getOwner()));
         txt.setText(deerNumber + ": " + mark.getOwner());
         markerInfo.setText("Merkkaaja: " + mark.getMarker() + " (" + mark.getTime() + ")");
         searchButton.setEnabled(true);

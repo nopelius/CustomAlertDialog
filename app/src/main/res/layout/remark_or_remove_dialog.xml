@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:layout_marginStart="5dp"
         android:layout_marginTop="7dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="3dp"
         android:text="Vasa X: Vasaaja"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -41,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="11dp"
         android:layout_marginTop="3dp"
-        android:text="Merkkaaja: MerkkiMarkki" />
+        android:text="Merkkaaja: MerkkiMarkki (klonaika)" />
     <LinearLayout
         android:id="@+id/actionsWrap"
         android:layout_centerHorizontal="true"
