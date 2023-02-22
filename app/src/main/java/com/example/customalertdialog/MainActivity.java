@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
 import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
+import com.example.customalertdialog.dialogs.SearchOwnerDialogFragment;
 import com.example.customalertdialog.dialogs.SuggestionHandler;
 import com.example.customalertdialog.entities.Mark;
 import com.example.customalertdialog.entities.MarkList;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         MarkDialogFragment.DialogListener, SearchDialogFragment.DialogListener,
-        RemarkOrRemoveDialogFragment.DialogListener {
+        RemarkOrRemoveDialogFragment.DialogListener, SearchOwnerDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -67,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements
         ImageButton searchButton = findViewById(R.id.imageButton);
         searchButton.setOnClickListener(v -> {
             DialogFragment newFragment = SearchDialogFragment.newInstance(unmarkedDeer, markList);
+            newFragment.show(getSupportFragmentManager(), "dialog");
+        });
+
+        Button searchForOwner = findViewById(R.id.searchForOwnerButton);
+        searchForOwner.setOnClickListener(v -> {
+            DialogFragment newFragment = SearchOwnerDialogFragment.newInstance(OWNERS);
             newFragment.show(getSupportFragmentManager(), "dialog");
         });
     }

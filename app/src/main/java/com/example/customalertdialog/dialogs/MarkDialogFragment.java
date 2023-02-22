@@ -121,7 +121,6 @@ public class MarkDialogFragment extends DialogFragment {
         textView.requestFocus();
         listener.openTheInputs(MarkDialogFragment.this);
         return textView;
-
     }
 
     private void setSuggestionButtons(View mView, AutoCompleteTextView textView) {

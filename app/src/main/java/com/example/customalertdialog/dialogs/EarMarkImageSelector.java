@@ -22,8 +22,10 @@ public class EarMarkImageSelector {
     public int getEarMarkImage(String owner) {
         if(earMarkImages.containsKey(owner)){
             return earMarkImages.get(owner);
-        } else {
+        } else if(owner.length() > 0) {
             return R.drawable.jalanjaljet;
+        } else {
+            return randomPlaceholderImage();
         }
     }
 
