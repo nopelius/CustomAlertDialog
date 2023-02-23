@@ -52,11 +52,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="2">
+
         <ListView
             android:id="@+id/markedForTheOwner"
             android:layout_width="wrap_content"
             android:layout_height="175dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ListView
             android:id="@+id/ownerHasMarked"
@@ -91,6 +92,6 @@
         android:layout_marginStart="43dp"
         android:layout_marginTop="11dp"
         android:layout_weight="1"
-        android:text="Okke" />
+        android:text="Selvä" />
 
 </RelativeLayout>

@@ -34,6 +34,7 @@ public class SearchOwnerDialogFragment extends DialogFragment {
     }
 
     public interface DialogListener {
+        void closeInputsAndShowOwnerDialog(DialogFragment dialog, EditText text);
         void openTheInputs(DialogFragment dialog);
         void closeTheInputs(DialogFragment dialog, EditText text);
     }
@@ -107,6 +108,14 @@ public class SearchOwnerDialogFragment extends DialogFragment {
     private void addActionButtons(View mView) {
         Button searchButton = mView.findViewById(R.id.searchButton);
         searchButton.setEnabled(false);
+        searchButton.setOnClickListener(v -> {
+                listener.closeInputsAndShowOwnerDialog(
+                        SearchOwnerDialogFragment.this,
+                        mView.findViewById(R.id.autoCompleteTextView)
+                );
+                SearchOwnerDialogFragment.this.getDialog().cancel();
+            }
+        );
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> {

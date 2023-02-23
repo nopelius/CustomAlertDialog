@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
+import com.example.customalertdialog.dialogs.OwnerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SearchOwnerDialogFragment;
@@ -80,6 +81,15 @@ public class MainActivity extends AppCompatActivity implements
 
     protected void showRemarkOrRemoveDialog(Mark mark) {
         DialogFragment newFragment = RemarkOrRemoveDialogFragment.newInstance(mark);
+        newFragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void closeInputsAndShowOwnerDialog(DialogFragment dialog, EditText editText) {
+        closeTheInputs(dialog, editText);
+        DialogFragment newFragment = OwnerInfoDialogFragment.newInstance(
+                editText.getText().toString()
+        );
         newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
