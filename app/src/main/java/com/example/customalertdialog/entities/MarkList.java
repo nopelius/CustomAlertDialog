@@ -2,6 +2,7 @@ package com.example.customalertdialog.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MarkList {
     List<Mark> marks;
@@ -44,5 +45,25 @@ public class MarkList {
                 break;
             }
         }
+    }
+
+    public ArrayList<Integer> deerNumbersMarkedForOwner(String owner) {
+        ArrayList<Integer> deerNumbers = new ArrayList<>();
+        for(Mark mark : getMarks()) {
+            if(Objects.equals(mark.getOwner(), owner)) {
+                deerNumbers.add(mark.getDeerNumber());
+            }
+        }
+        return deerNumbers;
+    }
+
+    public ArrayList<Integer> deerNumbersMarkedByUser(String user) {
+        ArrayList<Integer> deerNumbers = new ArrayList<>();
+        for(Mark mark : getMarks()) {
+            if(Objects.equals(mark.getMarker(), user)) {
+                deerNumbers.add(mark.getDeerNumber());
+            }
+        }
+        return deerNumbers;
     }
 }

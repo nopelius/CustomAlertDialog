@@ -16,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
+import com.example.customalertdialog.entities.MarkList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OwnerInfoDialogFragment extends DialogFragment {
@@ -24,10 +26,11 @@ public class OwnerInfoDialogFragment extends DialogFragment {
     EarMarkImageSelector earMarkImageSelector;
     View mView;
 
-    public static OwnerInfoDialogFragment newInstance(String owner) {
+    public static OwnerInfoDialogFragment newInstance(String owner, MarkList markList) {
         OwnerInfoDialogFragment f = new OwnerInfoDialogFragment();
         Bundle args = new Bundle();
         args.putString("owner", owner);
+        args.putSerializable("markList", (Serializable) markList);
         f.setArguments(args);
         return f;
     }
@@ -39,21 +42,17 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         mView = getLayoutInflater().inflate(R.layout.show_owner_dialog, null);
         earMarkImageSelector = new EarMarkImageSelector();
         String owner = getArguments().getString("owner");
+        MarkList marks = (MarkList) getArguments().getSerializable("markList");
+
+
         setEarMarkImage(owner);
         TextView txt = mView.findViewById(R.id.textView);
         txt.setText(owner);
         addActionButtons();
         builder.setView(mView);
 
-        ArrayList<Integer> deerNumbers = new ArrayList<>();
-        deerNumbers.add(1);
-        deerNumbers.add(2);
-        deerNumbers.add(3);
-        deerNumbers.add(4);
-        deerNumbers.add(5);
-        deerNumbers.add(6);
-        addDeersToListView(deerNumbers, R.id.markedForTheOwner);
-        addDeersToListView(deerNumbers, R.id.ownerHasMarked);
+        addDeersToListView(marks.deerNumbersMarkedForOwner(owner), R.id.markedForTheOwner);
+        addDeersToListView(marks.deerNumbersMarkedByUser(owner), R.id.ownerHasMarked);
         return builder.create();
     }
 
@@ -75,15 +74,6 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         cancelButton.setOnClickListener(v -> {
             OwnerInfoDialogFragment.this.getDialog().cancel();
         });
-    }
-
-    private void addDeersOwnerOwns(ArrayList<Integer> deerNumbers) {
-        ListView listView = mView.findViewById(R.id.markedForTheOwner);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(
-                getActivity(), R.layout.activity_list_view, R.id.textView, deerNumbers
-        );
-        listView.setAdapter(adapter);
-        listView.setDividerHeight(1);
     }
 
     private void addDeersToListView(ArrayList<Integer> deerNumbers, int anId) {

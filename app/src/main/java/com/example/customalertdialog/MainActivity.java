@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements
     public void closeInputsAndShowOwnerDialog(DialogFragment dialog, EditText editText) {
         closeTheInputs(dialog, editText);
         DialogFragment newFragment = OwnerInfoDialogFragment.newInstance(
-                editText.getText().toString()
+                editText.getText().toString(), markList
         );
         newFragment.show(getSupportFragmentManager(), "dialog");
     }
