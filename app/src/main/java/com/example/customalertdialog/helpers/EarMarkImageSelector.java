@@ -11,8 +11,17 @@ import java.util.Random;
 public class EarMarkImageSelector {
 
     private Map<String, Integer> earMarkImages;
+    private List<Integer> placeholderImageIds;
 
     public EarMarkImageSelector() {
+        this.placeholderImageIds = Arrays.asList(R.drawable.jalanjaljet);
+        earMarkImages = new HashMap<>();
+        earMarkImages.put("Simo Siivola", R.drawable.simon_merkki);
+        earMarkImages.put("Kullervo Kullanhuuhtoja", R.drawable.kullervonmerkki);
+    }
+
+    public EarMarkImageSelector(List<Integer> placeholderImageIds) {
+        this.placeholderImageIds = placeholderImageIds;
         earMarkImages = new HashMap<>();
         earMarkImages.put("Simo Siivola", R.drawable.simon_merkki);
         earMarkImages.put("Kullervo Kullanhuuhtoja", R.drawable.kullervonmerkki);
@@ -20,22 +29,18 @@ public class EarMarkImageSelector {
 
 
     public int getEarMarkImage(String owner) {
-        if(earMarkImages.containsKey(owner)){
-            return earMarkImages.get(owner);
-        } else if(owner.length() > 0) {
-            return R.drawable.jalanjaljet;
-        } else {
+        if(owner.length() == 0) {
             return randomPlaceholderImage();
+        } else if(earMarkImages.containsKey(owner)){
+            return earMarkImages.get(owner);
+        } else {
+            return R.drawable.jalanjaljet;
         }
     }
 
     public int randomPlaceholderImage() {
-        List<Integer> givenList = Arrays.asList(
-                R.drawable.poro, R.drawable.korvamerkki, R.drawable.poronummella,
-                R.drawable.luontoa, R.drawable.hyttynen
-        );
         Random rand = new Random();
-        return givenList.get(rand.nextInt(givenList.size()));
+        return placeholderImageIds.get(rand.nextInt(placeholderImageIds.size()));
     }
 
 }

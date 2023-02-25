@@ -24,6 +24,7 @@ import com.example.customalertdialog.helpers.MarkList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SearchDeerDialogFragment extends DialogFragment {
 
@@ -161,7 +162,13 @@ public class SearchDeerDialogFragment extends DialogFragment {
     }
 
     private void listenToChangeDeer(MarkList markList, int deerNumber) {
-        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector();
+        EarMarkImageSelector earMarkImageSelector = new EarMarkImageSelector(
+                Arrays.asList(
+                        R.drawable.poro, R.drawable.korvamerkki,
+                        R.drawable.poronummella, R.drawable.luontoa,
+                        R.drawable.hyttynen
+                )
+        );
         Mark mark = markList.findMarkWithNumber(deerNumber);
         image.setImageResource(earMarkImageSelector.getEarMarkImage(mark.getOwner()));
         txt.setText(deerNumber + ": " + mark.getOwner());

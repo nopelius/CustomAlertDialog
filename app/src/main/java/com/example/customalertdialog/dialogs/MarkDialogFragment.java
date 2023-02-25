@@ -21,6 +21,8 @@ import androidx.fragment.app.DialogFragment;
 import com.example.customalertdialog.R;
 import com.example.customalertdialog.helpers.EarMarkImageSelector;
 
+import java.util.Arrays;
+
 public class MarkDialogFragment extends DialogFragment {
 
     DialogListener listener;
@@ -63,7 +65,12 @@ public class MarkDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.mark_dialog, null);
-        earMarkImageSelector = new EarMarkImageSelector();
+        earMarkImageSelector = new EarMarkImageSelector(
+                Arrays.asList(
+                        R.drawable.poro, R.drawable.korvamerkki, R.drawable.poronummella,
+                        R.drawable.luontoa, R.drawable.hyttynen
+                )
+        );
 
         AutoCompleteTextView textView = setMarkingTextField(mView);
         setTitle(mView);

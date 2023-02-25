@@ -22,6 +22,8 @@ import androidx.fragment.app.DialogFragment;
 import com.example.customalertdialog.R;
 import com.example.customalertdialog.helpers.EarMarkImageSelector;
 
+import java.util.Arrays;
+
 public class SearchOwnerDialogFragment extends DialogFragment {
 
     DialogListener listener;
@@ -56,7 +58,11 @@ public class SearchOwnerDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View mView = getLayoutInflater().inflate(R.layout.search_owner_dialog, null);
-        earMarkImageSelector = new EarMarkImageSelector();
+        earMarkImageSelector = new EarMarkImageSelector(
+                Arrays.asList(
+                        R.drawable.aslak_juuso, R.drawable.mosku
+                )
+        );
         setMarkingTextField(mView);
         addActionButtons(mView);
         builder.setView(mView);
