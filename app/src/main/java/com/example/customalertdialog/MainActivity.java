@@ -18,9 +18,9 @@ import com.example.customalertdialog.dialogs.OwnerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDialogFragment;
 import com.example.customalertdialog.dialogs.SearchOwnerDialogFragment;
-import com.example.customalertdialog.dialogs.SuggestionHandler;
-import com.example.customalertdialog.entities.Mark;
-import com.example.customalertdialog.entities.MarkList;
+import com.example.customalertdialog.helpers.SuggestionHandler;
+import com.example.customalertdialog.helpers.Mark;
+import com.example.customalertdialog.helpers.MarkList;
 
 import java.util.ArrayList;
 

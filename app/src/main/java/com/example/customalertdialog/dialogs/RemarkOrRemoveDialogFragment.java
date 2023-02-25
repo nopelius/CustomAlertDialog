@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
-import com.example.customalertdialog.entities.Mark;
+import com.example.customalertdialog.helpers.EarMarkImageSelector;
+import com.example.customalertdialog.helpers.Mark;
 
 public class RemarkOrRemoveDialogFragment extends DialogFragment {
 

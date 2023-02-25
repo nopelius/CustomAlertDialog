@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
+import com.example.customalertdialog.helpers.EarMarkImageSelector;
 
 public class SearchOwnerDialogFragment extends DialogFragment {
 

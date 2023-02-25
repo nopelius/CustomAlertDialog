@@ -18,8 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
-import com.example.customalertdialog.entities.Mark;
-import com.example.customalertdialog.entities.MarkList;
+import com.example.customalertdialog.helpers.EarMarkImageSelector;
+import com.example.customalertdialog.helpers.Mark;
+import com.example.customalertdialog.helpers.MarkList;
 
 import java.io.Serializable;
 import java.util.ArrayList;

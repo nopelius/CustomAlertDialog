@@ -1,4 +1,4 @@
-package com.example.customalertdialog.dialogs;
+package com.example.customalertdialog.helpers;
 
 import com.example.customalertdialog.R;
 
