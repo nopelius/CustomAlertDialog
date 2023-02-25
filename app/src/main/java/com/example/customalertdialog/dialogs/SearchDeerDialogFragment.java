@@ -25,7 +25,7 @@ import com.example.customalertdialog.helpers.MarkList;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SearchDialogFragment extends DialogFragment {
+public class SearchDeerDialogFragment extends DialogFragment {
 
     DialogListener listener;
     EditText numberTextField;
@@ -36,8 +36,8 @@ public class SearchDialogFragment extends DialogFragment {
     TextView markerInfo;
     Button searchButton;
 
-    public static SearchDialogFragment newInstance(ArrayList<Integer> unmarkedDeer, MarkList markList) {
-        SearchDialogFragment f = new SearchDialogFragment();
+    public static SearchDeerDialogFragment newInstance(ArrayList<Integer> unmarkedDeer, MarkList markList) {
+        SearchDeerDialogFragment f = new SearchDeerDialogFragment();
         Bundle args = new Bundle();
         args.putIntegerArrayList("unmarkedDeer", unmarkedDeer);
         args.putSerializable("markList", (Serializable) markList.getMarks());
@@ -100,8 +100,8 @@ public class SearchDialogFragment extends DialogFragment {
 
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> {
-            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
-            SearchDialogFragment.this.getDialog().cancel();
+            listener.closeTheInputs(SearchDeerDialogFragment.this, numberTextField);
+            SearchDeerDialogFragment.this.getDialog().cancel();
         });
     }
 
@@ -153,7 +153,7 @@ public class SearchDialogFragment extends DialogFragment {
 
         searchButton.setOnClickListener(v -> {
             listener.closeDialogAndStartMarkingDeer(
-                    SearchDialogFragment.this, numberTextField, deerNumber
+                    SearchDeerDialogFragment.this, numberTextField, deerNumber
             );
         });
         searchButton.setEnabled(true);
@@ -170,9 +170,9 @@ public class SearchDialogFragment extends DialogFragment {
         searchButton.setText("Muokkaa");
 
         searchButton.setOnClickListener(v -> {
-            listener.closeTheInputs(SearchDialogFragment.this, numberTextField);
+            listener.closeTheInputs(SearchDeerDialogFragment.this, numberTextField);
             listener.changeDeer(
-                    SearchDialogFragment.this,
+                    SearchDeerDialogFragment.this,
                     markList.findMarkWithNumber(deerNumber)
             );
         });
