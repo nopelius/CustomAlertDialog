@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
@@ -111,6 +112,13 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void openTheInputs(DialogFragment dialog) {
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    @Override
+    public void openTheInputs(TextView textView) {
+        textView.setFocusableInTouchMode(true);
+        textView.requestFocus();
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 

@@ -45,7 +45,7 @@ public class MarkDialogFragment extends DialogFragment {
 
     public interface DialogListener {
         void markDeerToOwner(DialogFragment dialog, int deerNumber, String owner);
-        void openTheInputs(DialogFragment dialog);
+        void openTheInputs(TextView textView);
         void closeTheInputs(DialogFragment dialog, EditText text);
     }
 
@@ -94,14 +94,9 @@ public class MarkDialogFragment extends DialogFragment {
     }
 
     private AutoCompleteTextView setMarkingTextField(View mView) {
-        String[] owners = getArguments().getStringArray("owners");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                getActivity(), android.R.layout.simple_dropdown_item_1line, owners
+        AutoCompleteTextView textView = CommonDialogWidgets.autoCompleteTextViewForOwners(
+                mView, getActivity(), getArguments().getStringArray("owners")
         );
-
-        AutoCompleteTextView textView = mView.findViewById(R.id.autoCompleteTextView);
-        textView.setThreshold(1);
-        textView.setAdapter(adapter);
         textView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -118,9 +113,7 @@ public class MarkDialogFragment extends DialogFragment {
             public void afterTextChanged(Editable editable) {
             }
         });
-        textView.setFocusableInTouchMode(true);
-        textView.requestFocus();
-        listener.openTheInputs(MarkDialogFragment.this);
+        listener.openTheInputs(textView);
         return textView;
     }
 
