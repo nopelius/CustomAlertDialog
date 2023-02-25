@@ -18,7 +18,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.customalertdialog.R;
 import com.example.customalertdialog.entities.MarkList;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OwnerInfoDialogFragment extends DialogFragment {
@@ -30,7 +29,7 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         OwnerInfoDialogFragment f = new OwnerInfoDialogFragment();
         Bundle args = new Bundle();
         args.putString("owner", owner);
-        args.putSerializable("markList", (Serializable) markList);
+        args.putSerializable("markList", markList);
         f.setArguments(args);
         return f;
     }
@@ -42,8 +41,7 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         mView = getLayoutInflater().inflate(R.layout.show_owner_dialog, null);
         earMarkImageSelector = new EarMarkImageSelector();
         String owner = getArguments().getString("owner");
-        MarkList marks = (MarkList) getArguments().getSerializable("markList");
-
+        MarkList markList = (MarkList) getArguments().getSerializable("markList");
 
         setEarMarkImage(owner);
         TextView txt = mView.findViewById(R.id.textView);
@@ -51,8 +49,8 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         addActionButtons();
         builder.setView(mView);
 
-        addDeersToListView(marks.deerNumbersMarkedForOwner(owner), R.id.markedForTheOwner);
-        addDeersToListView(marks.deerNumbersMarkedByUser(owner), R.id.ownerHasMarked);
+        addDeersToListView(markList.deerNumbersMarkedForOwner(owner), R.id.markedForTheOwner);
+        addDeersToListView(markList.deerNumbersMarkedByUser(owner), R.id.ownerHasMarked);
         return builder.create();
     }
 

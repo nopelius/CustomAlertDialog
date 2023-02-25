@@ -1,10 +1,11 @@
 package com.example.customalertdialog.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MarkList {
+public class MarkList implements Serializable {
     List<Mark> marks;
 
     public MarkList() {

@@ -3,7 +3,6 @@ package com.example.customalertdialog.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
