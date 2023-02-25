@@ -111,11 +111,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void openTheInputs(DialogFragment dialog) {
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    @Override
     public void openTheInputs(TextView textView) {
         textView.setFocusableInTouchMode(true);
         textView.requestFocus();

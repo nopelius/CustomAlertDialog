@@ -47,7 +47,8 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         setEarMarkImage(owner);
         TextView txt = mView.findViewById(R.id.textView);
         txt.setText(owner);
-        addActionButtons();
+        Button cancelButton = mView.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(v -> OwnerInfoDialogFragment.this.getDialog().cancel());
         builder.setView(mView);
 
         addDeersToListView(markList.deerNumbersMarkedForOwner(owner), R.id.markedForTheOwner);
@@ -66,13 +67,6 @@ public class OwnerInfoDialogFragment extends DialogFragment {
     private void setEarMarkImage(String owner) {
         ImageView image = mView.findViewById(R.id.imageView);
         image.setImageResource(earMarkImageSelector.getEarMarkImage(owner));
-    }
-
-    private void addActionButtons() {
-        Button cancelButton = mView.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(v -> {
-            OwnerInfoDialogFragment.this.getDialog().cancel();
-        });
     }
 
     private void addDeersToListView(ArrayList<Integer> deerNumbers, int anId) {

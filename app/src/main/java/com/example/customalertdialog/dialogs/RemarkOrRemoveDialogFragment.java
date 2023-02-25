@@ -62,6 +62,13 @@ public class RemarkOrRemoveDialogFragment extends DialogFragment {
         TextView markerTxt = mView.findViewById(R.id.markerInfo);
         markerTxt.setText("Merkkaaja: " + mark.getMarker() + " (" + mark.getTime() + ")");
 
+        addActionButtons(mView, mark);
+
+        builder.setView(mView);
+        return builder.create();
+    }
+
+    private void addActionButtons(View mView, Mark mark) {
         Button remarkButton = mView.findViewById(R.id.remarkButton);
         remarkButton.setOnClickListener(v -> {
             RemarkOrRemoveDialogFragment.this.getDialog().cancel();
@@ -71,8 +78,5 @@ public class RemarkOrRemoveDialogFragment extends DialogFragment {
         });
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> RemarkOrRemoveDialogFragment.this.getDialog().cancel());
-
-        builder.setView(mView);
-        return builder.create();
     }
 }

@@ -48,7 +48,7 @@ public class SearchDialogFragment extends DialogFragment {
     public interface DialogListener {
         void closeDialogAndStartMarkingDeer(DialogFragment dialog, EditText edit, int deerNumber);
         void changeDeer(DialogFragment dialog, Mark mark);
-        void openTheInputs(DialogFragment dialog);
+        void openTheInputs(TextView textView);
         void closeTheInputs(DialogFragment dialog, EditText text);
     }
 
@@ -107,9 +107,7 @@ public class SearchDialogFragment extends DialogFragment {
 
     private void addSearchText(View mView, MarkList markList) {
         numberTextField = mView.findViewById(R.id.editTextNumber);
-        numberTextField.setFocusableInTouchMode(true);
-        numberTextField.requestFocus();
-        listener.openTheInputs(SearchDialogFragment.this);
+        listener.openTheInputs(numberTextField);
         numberTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
