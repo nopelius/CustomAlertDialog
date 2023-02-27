@@ -32,6 +32,7 @@ public class RemarkOrRemoveDialogFragment extends DialogFragment {
 
     public interface DialogListener {
         void showMarkDialog(String msg, int deerNumber);
+        void removeMark(Dialog dialog, int deerNumber);
     }
 
     @Override
@@ -76,6 +77,14 @@ public class RemarkOrRemoveDialogFragment extends DialogFragment {
                     "Merkkaa uudelleen vasa: " + mark.getDeerNumber(), mark.getDeerNumber()
             );
         });
+
+        Button removeButton = mView.findViewById(R.id.removeMarkButton);
+        removeButton.setOnClickListener(v -> listener.removeMark(
+                RemarkOrRemoveDialogFragment.this.getDialog(),
+                mark.getDeerNumber()
+            )
+        );
+
         Button cancelButton = mView.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(v -> RemarkOrRemoveDialogFragment.this.getDialog().cancel());
     }

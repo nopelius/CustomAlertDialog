@@ -3,6 +3,7 @@ package com.example.customalertdialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -148,7 +149,12 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             makeToast("Vasan merkkaamisessa tapahtui virhe - vasaa ei merkattu.");
         }
+    }
 
+    @Override
+    public void removeMark(Dialog dialog, int deerNumber) {
+        dialog.cancel();
+        makeToast("Poistetaan merkkaus vasalta numero: " + deerNumber);
     }
 
     private void makeToast(String s) {
