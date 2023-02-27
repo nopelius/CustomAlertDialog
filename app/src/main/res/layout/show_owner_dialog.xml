@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp">
@@ -9,63 +10,111 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
         android:layout_alignParentStart="true"
         android:layout_gravity="center"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="12dp"
         android:text="Tässä poronomistaja"
         android:textSize="25sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <LinearLayout
-        android:id="@+id/actionsWrap"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/textView"
-        android:orientation="horizontal"
+        android:id="@+id/titlesWrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2">
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="5dp">
+
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="20dp"
+            android:layout_weight="1"
             android:text="Omistaa vasat:"
-            android:layout_weight="1"/>
+            tools:layout_editor_absoluteX="30dp"
+            tools:layout_editor_absoluteY="217dp" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="20dp"
             android:layout_weight="1"
-            android:text="Merkannut Vasat" />
-
+            android:text="Merkannut Vasat"
+            tools:layout_editor_absoluteX="244dp"
+            tools:layout_editor_absoluteY="222dp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/listsWrap"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/actionsWrap"
-        android:orientation="horizontal"
+        android:id="@+id/subTitlesWrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2">
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@+id/titlesWrap"
+        tools:layout_editor_absoluteX="5dp">
+
+        <TextView
+            android:id="@+id/numberOfOwnedDeers"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="0 kpl"
+            tools:layout_editor_absoluteX="30dp"
+            tools:layout_editor_absoluteY="217dp" />
+
+        <TextView
+            android:id="@+id/numberOfMarkedDeers"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:text="0 kpl"
+            tools:layout_editor_absoluteX="244dp"
+            tools:layout_editor_absoluteY="222dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/listsWrap"
+        android:layout_width="match_parent"
+        app:layout_constraintHeight_max="175dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintTop_toBottomOf="@+id/subTitlesWrap"
+        tools:layout_editor_absoluteX="5dp">
 
         <ListView
             android:id="@+id/markedForTheOwner"
             android:layout_width="wrap_content"
-            android:layout_height="175dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <ListView
             android:id="@+id/ownerHasMarked"
             android:layout_width="wrap_content"
-            android:layout_height="175dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="333dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="1"
+        android:text="Selvä"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listsWrap" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -75,23 +124,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="4dp"
         android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/mosku" />
 
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="333dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listsWrap"
-        android:layout_alignParentStart="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="11dp"
-        android:layout_weight="1"
-        android:text="Selvä" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

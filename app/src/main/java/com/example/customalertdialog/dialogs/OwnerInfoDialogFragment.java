@@ -51,6 +51,12 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         cancelButton.setOnClickListener(v -> OwnerInfoDialogFragment.this.getDialog().cancel());
         builder.setView(mView);
 
+        TextView numberOfOwned = mView.findViewById(R.id.numberOfOwnedDeers);
+        numberOfOwned.setText(markList.deerNumbersMarkedForOwner(owner).size() + " kpl");
+
+        TextView numberOfMarked = mView.findViewById(R.id.numberOfMarkedDeers);
+        numberOfMarked.setText(markList.deerNumbersMarkedForOwner(owner).size() + " kpl");
+
         addDeersToListView(markList.deerNumbersMarkedForOwner(owner), R.id.markedForTheOwner);
         addDeersToListView(markList.deerNumbersMarkedByUser(owner), R.id.ownerHasMarked);
         return builder.create();
