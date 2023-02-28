@@ -2,6 +2,7 @@ package com.example.customalertdialog.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,13 @@ import java.util.ArrayList;
 
 public class OwnerInfoDialogFragment extends DialogFragment {
 
+    DialogListener listener;
     EarMarkImageSelector earMarkImageSelector;
     View mView;
+
+    public interface DialogListener {
+        void changeDeer(DialogFragment fragment, int i);
+    }
 
     public static OwnerInfoDialogFragment newInstance(String owner, MarkList markList) {
         OwnerInfoDialogFragment f = new OwnerInfoDialogFragment();
@@ -33,6 +39,16 @@ public class OwnerInfoDialogFragment extends DialogFragment {
         args.putSerializable("markList", markList);
         f.setArguments(args);
         return f;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OwnerInfoDialogFragment.DialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Must implement: " + e);
+        }
     }
 
     @NonNull
@@ -81,7 +97,9 @@ public class OwnerInfoDialogFragment extends DialogFragment {
                 getActivity(), R.layout.activity_list_view, R.id.textView, deerNumbers
         );
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener((adapterView, view, i, l) -> listener.changeDeer(
+                OwnerInfoDialogFragment.this, deerNumbers.get(i))
+        );
         listView.setDividerHeight(1);
     }
 }
-

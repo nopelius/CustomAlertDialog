@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements
         MarkDialogFragment.DialogListener, SearchDeerDialogFragment.DialogListener,
         RemarkOrRemoveDialogFragment.DialogListener, SearchOwnerDialogFragment.DialogListener,
-        SearchMarkedDeerDialogFragment.DialogListener {
+        SearchMarkedDeerDialogFragment.DialogListener, OwnerInfoDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements
         markList.addMark("Jussi", "Pekka", 5);
         markList.addMark("Kalle", "Kanerva", 20);
         markList.addMark("Simo Siivola", "Harri", 50);
+        markList.addMark("Simo Siivola", "Karri", 51);
+        markList.addMark("Simo Siivola", "Ari", 52);
+        markList.addMark("Simo Siivola", "Jari", 53);
+        markList.addMark("Simo Siivola", "Ari", 54);
 
         Button openDialogButton = findViewById(R.id.searchFromMarkedDeer);
         openDialogButton.setOnClickListener(v -> {
@@ -145,6 +149,13 @@ public class MainActivity extends AppCompatActivity implements
     public void changeDeer(DialogFragment dialog, Mark mark) {
         dialog.getDialog().cancel();
         showRemarkOrRemoveDialog(mark);
+    }
+
+    @Override
+    public void changeDeer(DialogFragment fragment, int deerNumber) {
+        System.out.println("boom");
+        fragment.getDialog().cancel();
+        showRemarkOrRemoveDialog(markList.findMarkWithNumber(deerNumber));
     }
 
     @Override
