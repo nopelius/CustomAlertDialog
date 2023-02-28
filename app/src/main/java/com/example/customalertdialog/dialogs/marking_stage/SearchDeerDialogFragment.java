@@ -1,4 +1,4 @@
-package com.example.customalertdialog.dialogs;
+package com.example.customalertdialog.dialogs.marking_stage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

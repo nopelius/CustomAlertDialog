@@ -1,4 +1,4 @@
-package com.example.customalertdialog.dialogs;
+package com.example.customalertdialog.dialogs.marking_stage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.customalertdialog.R;
+import com.example.customalertdialog.dialogs.CommonDialogWidgets;
 import com.example.customalertdialog.helpers.EarMarkImageSelector;
 
 import java.util.Arrays;

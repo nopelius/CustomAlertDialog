@@ -1,4 +1,4 @@
-package com.example.customalertdialog.dialogs;
+package com.example.customalertdialog.dialogs.results_stage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
