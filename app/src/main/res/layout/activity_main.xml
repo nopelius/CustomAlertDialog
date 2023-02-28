@@ -28,11 +28,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/markOrRemove"
+        android:id="@+id/markedDeerInfo"
         android:layout_width="229dp"
         android:layout_height="97dp"
         android:layout_marginTop="24dp"
-        android:text="Merkkaa uudelleen tai poista"
+        android:text="Tarkastele merkattua vasaa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchFromMarkedDeer" />
@@ -44,7 +44,7 @@
         android:layout_marginTop="120dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markOrRemove"
+        app:layout_constraintTop_toBottomOf="@+id/markedDeerInfo"
         app:srcCompat="@android:drawable/ic_menu_search" />
 
     <Button

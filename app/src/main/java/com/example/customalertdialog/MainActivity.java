@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.customalertdialog.dialogs.MarkDialogFragment;
+import com.example.customalertdialog.dialogs.MarkedDeerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.OwnerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDeerDialogFragment;
@@ -68,9 +69,14 @@ public class MainActivity extends AppCompatActivity implements
         unmarkedDeer.add(10);
         unmarkedDeer.add(12);
 
-        Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
-        openMarkOrRemoveDialogButton.setOnClickListener(
-                v -> showRemarkOrRemoveDialog(markList.findMarkWithNumber(20))
+        Button openMarkedDeerInfo = findViewById(R.id.markedDeerInfo);
+        openMarkedDeerInfo.setOnClickListener(
+                v -> {
+                    DialogFragment newFragment = MarkedDeerInfoDialogFragment.newInstance(
+                            markList.findMarkWithNumber(20)
+                    );
+                    newFragment.show(getSupportFragmentManager(), "dialog");
+                }
         );
 
         ImageButton searchButton = findViewById(R.id.imageButton);
