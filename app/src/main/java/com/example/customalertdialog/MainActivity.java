@@ -19,6 +19,7 @@ import com.example.customalertdialog.dialogs.MarkDialogFragment;
 import com.example.customalertdialog.dialogs.OwnerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.SearchDeerDialogFragment;
+import com.example.customalertdialog.dialogs.SearchMarkedDeerDialogFragment;
 import com.example.customalertdialog.dialogs.SearchOwnerDialogFragment;
 import com.example.customalertdialog.helpers.SuggestionHandler;
 import com.example.customalertdialog.helpers.Mark;
@@ -28,7 +29,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
         MarkDialogFragment.DialogListener, SearchDeerDialogFragment.DialogListener,
-        RemarkOrRemoveDialogFragment.DialogListener, SearchOwnerDialogFragment.DialogListener {
+        RemarkOrRemoveDialogFragment.DialogListener, SearchOwnerDialogFragment.DialogListener,
+        SearchMarkedDeerDialogFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -48,8 +50,16 @@ public class MainActivity extends AppCompatActivity implements
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         suggestionHandler = new SuggestionHandler(OWNERS);
 
-        Button openDialogButton = findViewById(R.id.mark);
-        openDialogButton.setOnClickListener(v -> showMarkDialog("Merkkaa vasa numero 12", 12));
+        markList = new MarkList();
+        markList.addMark("Jussi", "Pekka", 5);
+        markList.addMark("Kalle", "Kanerva", 20);
+        markList.addMark("Simo Siivola", "Harri", 50);
+
+        Button openDialogButton = findViewById(R.id.searchFromMarkedDeer);
+        openDialogButton.setOnClickListener(v -> {
+            DialogFragment newFragment = SearchMarkedDeerDialogFragment.newInstance(markList);
+            newFragment.show(getSupportFragmentManager(), "dialog");
+        });
 
         unmarkedDeer = new ArrayList<>();
         unmarkedDeer.add(1);
@@ -57,11 +67,6 @@ public class MainActivity extends AppCompatActivity implements
         unmarkedDeer.add(3);
         unmarkedDeer.add(10);
         unmarkedDeer.add(12);
-
-        markList = new MarkList();
-        markList.addMark("Jussi", "Pekka", 5);
-        markList.addMark("Kalle", "Kanerva", 20);
-        markList.addMark("Simo Siivola", "Harri", 50);
 
         Button openMarkOrRemoveDialogButton = findViewById(R.id.markOrRemove);
         openMarkOrRemoveDialogButton.setOnClickListener(
