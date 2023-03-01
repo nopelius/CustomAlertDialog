@@ -20,8 +20,10 @@ import com.example.customalertdialog.dialogs.results_stage.MarkedDeerInfoDialogF
 import com.example.customalertdialog.dialogs.marking_stage.OwnerInfoDialogFragment;
 import com.example.customalertdialog.dialogs.marking_stage.RemarkOrRemoveDialogFragment;
 import com.example.customalertdialog.dialogs.marking_stage.SearchDeerDialogFragment;
+import com.example.customalertdialog.dialogs.results_stage.OwnerInfoAfterMarkingFragment;
 import com.example.customalertdialog.dialogs.results_stage.SearchMarkedDeerDialogFragment;
 import com.example.customalertdialog.dialogs.marking_stage.SearchOwnerDialogFragment;
+import com.example.customalertdialog.dialogs.results_stage.SearchOwnerAfterMarkingFragment;
 import com.example.customalertdialog.helpers.SuggestionHandler;
 import com.example.customalertdialog.helpers.Mark;
 import com.example.customalertdialog.helpers.MarkList;
@@ -31,7 +33,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements
         MarkDialogFragment.DialogListener, SearchDeerDialogFragment.DialogListener,
         RemarkOrRemoveDialogFragment.DialogListener, SearchOwnerDialogFragment.DialogListener,
-        SearchMarkedDeerDialogFragment.DialogListener, OwnerInfoDialogFragment.DialogListener {
+        SearchMarkedDeerDialogFragment.DialogListener, OwnerInfoDialogFragment.DialogListener,
+        OwnerInfoAfterMarkingFragment.DialogListener, SearchOwnerAfterMarkingFragment.DialogListener {
 
     SuggestionHandler suggestionHandler;
     InputMethodManager imm;
@@ -94,6 +97,12 @@ public class MainActivity extends AppCompatActivity implements
             DialogFragment newFragment = SearchOwnerDialogFragment.newInstance(OWNERS);
             newFragment.show(getSupportFragmentManager(), "dialog");
         });
+
+        Button searchForOwnerAfterMarking = findViewById(R.id.searchForOwnerAfterMarking);
+        searchForOwnerAfterMarking.setOnClickListener(v -> {
+            DialogFragment newFragment = SearchOwnerAfterMarkingFragment.newInstance(OWNERS);
+            newFragment.show(getSupportFragmentManager(), "dialog");
+        });
     }
 
     protected void showRemarkOrRemoveDialog(Mark mark) {
@@ -105,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements
     public void closeInputsAndShowOwnerDialog(DialogFragment dialog, EditText editText) {
         closeTheInputs(dialog, editText);
         DialogFragment newFragment = OwnerInfoDialogFragment.newInstance(
+                editText.getText().toString(), markList
+        );
+        newFragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void closeInputsAndShowOwnerAfterMarkingDialog(DialogFragment dialog, EditText editText) {
+        closeTheInputs(dialog, editText);
+        DialogFragment newFragment = OwnerInfoAfterMarkingFragment.newInstance(
                 editText.getText().toString(), markList
         );
         newFragment.show(getSupportFragmentManager(), "dialog");
@@ -177,6 +195,14 @@ public class MainActivity extends AppCompatActivity implements
     public void removeMark(Dialog dialog, int deerNumber) {
         dialog.cancel();
         makeToast("Poistetaan merkkaus vasalta numero: " + deerNumber);
+    }
+
+    @Override
+    public void showMarkedDeerInfoDialog(int deerNumber) {
+        DialogFragment newFragment = MarkedDeerInfoDialogFragment.newInstance(
+                markList.findMarkWithNumber(deerNumber)
+        );
+        newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void makeToast(String s) {
