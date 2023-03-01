@@ -63,7 +63,8 @@ public class SearchOwnerDialogFragment extends DialogFragment {
                         R.drawable.aslak_juuso, R.drawable.mosku
                 )
         );
-        setMarkingTextField(mView);
+        TextView txt = setOwnerSearchTextField(mView);
+        listener.openTheInputs(txt);
         addActionButtons(mView);
         builder.setView(mView);
         return builder.create();
@@ -77,7 +78,7 @@ public class SearchOwnerDialogFragment extends DialogFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private AutoCompleteTextView setMarkingTextField(View mView) {
+    private AutoCompleteTextView setOwnerSearchTextField(View mView) {
         AutoCompleteTextView textView = CommonDialogWidgets.autoCompleteTextViewForOwners(
                 mView, getActivity(), getArguments().getStringArray("owners")
         );
@@ -97,7 +98,6 @@ public class SearchOwnerDialogFragment extends DialogFragment {
             public void afterTextChanged(Editable editable) {
             }
         });
-        listener.openTheInputs(textView);
         return textView;
     }
 
